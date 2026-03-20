@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProStudy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="interface/style.css">
+    
+    <style>
+        .delete-btn { margin-top: 50px; color: #ef4444; background: rgba(239, 68, 68, 0.1); border: none; padding: 12px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+        #name-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
+        }
+        .modal-card { background: white; padding: 35px 25px; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; }
+        .modal-card input { width: 100%; padding: 14px; margin: 20px 0; border: 2px solid #f1f5f9; border-radius: 15px; outline: none; font-size: 1rem; }
+        .modal-card button { background: var(--brand-blue); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: 700; }
+        #confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.confirm-box {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+}
+
+.confirm-box h3 {
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.confirm-box p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.cancel-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #e2e8f0;
+    font-weight: 600;
+}
+
+.danger-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #ef4444;
+    color: white;
+    font-weight: 700;
+}
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <div id="name-modal">
+        <div class="modal-card">
+            <img src="https://i.ibb.co/kgbBZgd5/main.png" width="70" style="border-radius:50%; margin-bottom:10px;">
+            <h3>Welcome</h3>
+            <p style="color:#64748b; font-size:0.9rem;">Please enter your name</p>
+            <input type="text" id="user-name-input" placeholder="Your Name" maxlength="15">
+            <button onclick="saveName()">Enter ProStudy</button>
+        </div>
+    </div>
+
+    <header class="top-container">
+      <div class="logo-area">
+          <img src="https://i.ibb.co/kgbBZgd5/main.png" class="logo-img">
+          <h2>ProStudy</h2>
+      </div>
+      <button id="ls-open" onclick="toggleMenu()"><i class="fa fa-bars-staggered"></i></button>
+    </header>
+
+    <nav id="ls">
+      <button id="ls-close" onclick="toggleMenu()"><i class="fa fa-xmark"></i></button>
+      <ul>
+        <li><a href="dashboard.html" class="active"><i class="fa fa-house"></i> Home</a></li>
+        <li><a href="news.html"><i class="fa fa-newspaper"></i> News Feed</a></li>
+        <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
+        <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
+      </ul>
+      <button class="delete-btn" onclick="openConfirm()">Reset Data</button>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="greeting-h1" id="welcome-text">Hey, User 👋</h1>
+
+        <div class="stack">
+            <a href="homework.html" class="nav-card">
+                <div class="icon-sq bg-blue"><i class="fa fa-book-open"></i></div>
+                <div class="info"><h3>Homework</h3><p>Check assignments</p></div>
+            </a>
+            
+            <a href="news.html" class="nav-card">
+                <div class="icon-sq bg-orange"><i class="fa fa-bullhorn"></i></div>
+                <div class="info"><h3>News Feed</h3><p>Latest school info</p></div>
+            </a>
+
+            <a href="request.html" class="nav-card">
+                <div class="icon-sq bg-purple"><i class="fa fa-message"></i></div>
+                <div class="info"><h3>Requests</h3><p>Send a message</p></div>
+            </a>
+        </div>
+    </main>
+
+    <div id="confirm-modal">
+  <div class="confirm-box">
+    <h3>Reset App?</h3>
+    <p>This will delete all your data permanently.</p>
+    
+    <div class="confirm-actions">
+      <button class="cancel-btn" onclick="closeConfirm()">Cancel</button>
+      <button class="danger-btn" onclick="confirmReset()">Reset</button>
+    </div>
+  </div>
+</div>
+
+    <script>
+        const welcomeText = document.getElementById('welcome-text');
+        const nameModal = document.getElementById('name-modal');
+        const ls = document.getElementById('ls');
+        const overlay = document.getElementById('overlay');
+
+        window.onload = () => {
+            const savedName = localStorage.getItem('prostudy_user');
+            if (!savedName) {
+                nameModal.style.display = 'flex';
+            } else {
+                welcomeText.innerText = `Hey, ${savedName} 👋`;
+            }
+        };
+
+        function saveName() {
+            const nameInput = document.getElementById('user-name-input').value;
+            if (nameInput.trim()) {
+                localStorage.setItem('prostudy_user', nameInput);
+                welcomeText.innerText = `Hey, ${nameInput} 👋`;
+                nameModal.style.display = 'none';
+            }
+        }
+
+        function openConfirm() {
+    document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+function closeConfirm() {
+    document.getElementById('confirm-modal').style.display = 'none';
+}
+
+function confirmReset() {
+    localStorage.clear();
+    location.reload();
+}
+    </script>
+    <script src="interactivity/script.js"></script>
+</body>
+</html>

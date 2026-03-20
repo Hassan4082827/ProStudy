@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProStudy | Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="interface/style.css">
+    <style>
+        :root {
+            --text-sub: #64748b;
+            --input-border: #cbd5e1;
+        }
+
+        .request-form-container {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 20px 20px 20px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .input-wrap { position: relative; margin-bottom: 30px; }
+
+        .input-wrap input, 
+        .input-wrap textarea {
+            width: 100%;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 2px solid var(--input-border);
+            background: transparent;
+            font-size: 1rem;
+            color: var(--text-main);
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-wrap input:focus, 
+        .input-wrap textarea:focus { border-color: var(--brand-blue); }
+
+        .input-wrap label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            color: var(--text-sub);
+            font-size: 1rem;
+            pointer-events: none;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-wrap input:focus + label,
+        .input-wrap input:not(:placeholder-shown) + label,
+        .input-wrap textarea:focus + label,
+        .input-wrap textarea:not(:placeholder-shown) + label {
+            top: -20px;
+            font-size: 0.75rem;
+            color: var(--brand-blue);
+            font-weight: 700;
+        }
+
+        .input-wrap input::placeholder, 
+        .input-wrap textarea::placeholder { color: transparent; }
+
+        .send-btn { 
+            background: var(--brand-blue); 
+            color: white; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 18px; 
+            font-weight: 800; 
+            width: 100%; 
+            margin-top: 5px; 
+            font-size: 1rem;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); 
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .send-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <header class="top-container">
+        <div class="logo-area">
+            <img src="assets/main.png" class="logo-img">
+            <h2>ProStudy</h2>
+        </div>
+        <button id="ls-open" onclick="toggleMenu()"><i class="fa fa-bars-staggered"></i></button>
+    </header>
+
+    <nav id="ls">
+        <button id="ls-close" onclick="toggleMenu()"><i class="fa fa-xmark"></i></button>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa fa-house"></i> Home</a></li>
+            <li><a href="news.html"><i class="fa fa-newspaper"></i> News</a></li>
+            <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
+            <li><a href="request.html" class="active"><i class="fa fa-paper-plane"></i> Request</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="greeting-h1">Request</h1>
+        
+        <form class="request-form-container" action="https://formsubmit.co/ajax/nurminakhatun5659@gmail.com" method="POST">
+            
+            <!-- 🛡️ Anti-bot honeypot -->
+            <input type="text" name="_honey" style="display:none">
+
+            <!-- 🛡️ Disable captcha -->
+            <input type="hidden" name="_captcha" value="false">
+
+            <!-- 🛡️ Better formatting -->
+            <input type="hidden" name="_template" value="table">
+
+            <div class="input-wrap">
+                <input type="text" id="req-name" name="name" placeholder="Name" required>
+                <label>Name</label>
+            </div>
+
+            <div class="input-wrap">
+                <textarea id="req-msg" name="message" rows="4" placeholder="Message" required></textarea>
+                <label>Message</label>
+            </div>
+
+            <button type="submit" class="send-btn">Send Message</button>
+        </form>
+    </main>
+
+    <script>
+        window.onload = () => {
+            const savedName = localStorage.getItem('prostudy_user');
+            if (savedName) {
+                const nameInput = document.getElementById('req-name');
+                nameInput.value = savedName;
+            }
+        };
+    </script>
+    <script src="interactivity/script.js"></script>
+</body>
+</html>

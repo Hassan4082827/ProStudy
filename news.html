@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProStudy | News Feed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="interface/style.css">
+    <style>
+        .card-date { margin-top: 12px; font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            font-weight: 600;
+            padding: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <header class="top-container">
+        <div class="logo-area">
+            <img src="assets/main.png" class="logo-img">
+            <h2>ProStudy</h2>
+        </div>
+        <button id="ls-open" onclick="toggleMenu()">
+            <i class="fa fa-bars-staggered"></i>
+        </button>
+    </header>
+
+    <nav id="ls">
+        <button id="ls-close" onclick="toggleMenu()">
+            <i class="fa fa-xmark"></i>
+        </button>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa fa-house"></i> Home</a></li>
+            <li><a href="news.html" class="active"><i class="fa fa-newspaper"></i> News Feed</a></li>
+            <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
+            <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="greeting-h1">News Feed</h1>
+
+        <div class="stack">
+            <div class="empty-state">
+                No News Currently 📰
+            </div>
+        </div>
+    </main>
+
+    <script src="interactivity/script.js"></script>
+
+</body>
+</html>

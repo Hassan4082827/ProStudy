@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProStudy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-top: #eef4ff;
+            --bg-bottom: #d1e3ff;
+            --brand-blue: #3b66f5;
+            --button-blue: #2563eb;
+            --text-sub: #64748b;
+            --footer-bg: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            color: #1e293b;
+            overflow: hidden;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-img {
+            width: clamp(75px, 20vw, 110px); 
+            height: auto;
+            margin-bottom: clamp(0.8rem, 3vh, 1.5rem); 
+            border-radius: 50%;
+            display: block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            font-size: clamp(1.4rem, 7vw, 2.8rem); 
+            color: var(--brand-blue);
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        p.tagline {
+            font-size: clamp(0.85rem, 3.5vw, 1.25rem);
+            color: var(--text-sub);
+            margin-bottom: clamp(1.5rem, 5vh, 2.5rem); 
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .btn {
+            background-color: var(--button-blue);
+            color: white;
+            padding: 14px 54px;
+            font-size: clamp(0.9rem, 3vw, 1.05rem);
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            padding: 1.2rem;
+            text-align: center;
+            font-size: clamp(0.7rem, 2.5vw, 1rem); 
+            color: #94a3b8;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding-bottom: 5vh; }
+            .btn { width: 70%; min-width: 200px; padding: 12px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="hero">
+        <img src="assets/main.png" alt="ProStudy Logo" class="logo-img">
+        
+        <h1>Welcome to ProStudy</h1>
+        <p class="tagline">Your best Study schedule provider</p>
+        
+        <button onclick="window.location.replace('dashboard.html');" class="btn">Get Started</button>
+    </main>
+
+    <footer>
+        &copy; 2025 - 2027 ProStudy. All rights reserved.
+    </footer>
+
+</body>
+</html>

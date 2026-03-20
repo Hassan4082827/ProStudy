@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProStudy | Homework</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="interface/style.css">
+    <style>
+        .date-group { margin-bottom: 30px; }
+        .date-header { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; padding-left: 5px; }
+        .block-container { background: white; border-radius: 25px; padding: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.7); }
+        .item-row { display: flex; align-items: center; padding: 18px 15px; border-bottom: 1px solid #f1f5f9; }
+        .item-row:last-child { border-bottom: none; }
+
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            font-weight: 600;
+            padding: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <header class="top-container">
+        <div class="logo-area">
+            <img src="assets/main.png" class="logo-img">
+            <h2>ProStudy</h2>
+        </div>
+        <button id="ls-open" onclick="toggleMenu()">
+            <i class="fa fa-bars-staggered"></i>
+        </button>
+    </header>
+
+    <nav id="ls">
+        <button id="ls-close" onclick="toggleMenu()">
+            <i class="fa fa-xmark"></i>
+        </button>
+        <ul>
+            <li><a href="dashboard.html"><i class="fa fa-house"></i> Home</a></li>
+            <li><a href="news.html"><i class="fa fa-newspaper"></i> News Feed</a></li>
+            <li><a href="homework.html" class="active"><i class="fa fa-book-bookmark"></i> Homework</a></li>
+            <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="greeting-h1">Homework</h1>
+
+        <div class="empty-state">
+            No Homework Currently 📚
+        </div>
+
+    </main>
+
+    <script src="interactivity/script.js"></script>
+
+</body>
+</html>
