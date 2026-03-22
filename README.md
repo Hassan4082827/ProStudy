@@ -2,9 +2,9 @@
 ​[!IMPORTANT]
 ProStudy v2.0.0 is a private, custom-engineered education management platform. This system is developed exclusively for my school environment and is not a public utility.
 **🏛️ System Overview**
-​The ProStudy ecosystem operates as a specialized hybrid application. This repository hosts the Centralized Web Engine, serving as the "Single Source of Truth" for the native Android client.
+ ​The ProStudy ecosystem operates as a specialized hybrid application. This repository hosts the Centralized Web Engine, serving as the "Single Source of Truth" for the native Android client.
 **⚙️ Technical Specifications**
-​Architecture: Decoupled Frontend-as-a-Service (FaaS) optimized for Android 14 System WebView.
+ ​Architecture: Decoupled Frontend-as-a-Service (FaaS) optimized for Android 14 System WebView.
 ​Visual Layer: Custom grid-based UI system engineered for high-DPI mobile displays.
 ​Identity: High-fidelity 1024x1024 branding assets ensuring zero-blur scaling.
 ​Logic: Hardware-accelerated transitions and intelligent "Empty State" protocols.
