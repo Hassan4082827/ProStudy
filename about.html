@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f0f4ff;      
+            --card-bg: #ffffff;      
+            --accent: #007bff; 
+            --text-main: #000000;    
+            --text-dim: #666666;
+            --success: #28a745;
+            --warning: #ff4757;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0; padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- DASHBOARD HEADER --- */
+        .dashboard-header {
+            padding: 40px 20px 25px;
+            background: #eef3ff;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .header-top { display: flex; align-items: center; margin-bottom: 10px; }
+        .main-back-btn { font-size: 22px; padding: 10px; margin-left: -10px; cursor: pointer; color: var(--text-main); }
+        .dashboard-header h1 { font-size: 26px; font-weight: 800; margin: 0 0 0 10px; letter-spacing: -0.5px; }
+        .dashboard-header p { margin: 5px 0 0 45px; font-size: 13px; color: var(--text-dim); }
+
+        /* --- DASHBOARD CONTENT --- */
+        .container { padding: 0 20px; max-width: 500px; margin: auto; }
+
+        .v-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(160, 175, 200, 0.1);
+            border: 1px solid #e1e9f5;
+            transition: transform 0.1s;
+        }
+
+        .v-card:active { transform: scale(0.97); }
+        .v-card i { font-size: 26px; color: var(--accent); margin-right: 20px; }
+        .v-card h3 { margin: 0; font-size: 17px; font-weight: 700; }
+        .v-card p { margin: 4px 0 0; font-size: 12px; color: var(--text-dim); }
+
+        /* --- SUB-PAGE PANEL --- */
+        #versions-page {
+            position: fixed;
+            top: 100%; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 1000;
+            transition: top 0.4s cubic-bezier(0.1, 0.7, 0.1, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #versions-page.active { top: 0; }
+        .sub-nav { padding: 20px; display: flex; align-items: center; flex-shrink: 0; }
+
+        .hero { text-align: center; margin: 10px 0 30px; flex-shrink: 0; }
+        .hero i { font-size: 75px; color: #ced8e8; animation: spinGear 20s linear infinite; }
+        @keyframes spinGear { 100% { transform: rotate(360deg); } }
+
+        /* DYNAMIC STATUS TEXT */
+        #status-msg {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .list-box {
+            background: var(--card-bg);
+            border-radius: 20px;
+            margin: 0 20px 50px;
+            padding: 5px 20px;
+            border: 1px solid #e0e6f0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid #f2f5f9;
+        }
+
+        .row:last-child { border-bottom: none; }
+        .row span { color: var(--text-dim); font-size: 14px; font-weight: 600; flex: 1; }
+        .row b { color: var(--text-main); font-family: monospace; font-size: 15px; flex: 1.5; text-align: right; }
+        .red-tag { color: #ff4757 !important; }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header">
+        <div class="header-top">
+            <div class="main-back-btn" onclick="goHome()">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <h1>About ProStudy</h1>
+        </div>
+        <p>System configuration & build details</p>
+    </div>
+
+    <div class="container">
+        <div class="v-card" onclick="toggleVersions(true)">
+            <i class="fa-solid fa-code-branch"></i>
+            <div class="info">
+                <h3>Versions</h3>
+                <p>Build and live content data</p>
+            </div>
+        </div>
+
+        <div class="v-card">
+            <i class="fa-solid fa-microchip"></i>
+            <div class="info">
+                <h3>System Info</h3>
+                <p>Hardware and ID details</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="versions-page">
+        <div class="sub-nav" onclick="toggleVersions(false)">
+            <i class="fa-solid fa-chevron-down" style="font-size: 24px; cursor: pointer;"></i>
+            <b style="margin-left: 15px; font-size: 18px;">Versions</b>
+        </div>
+
+        <div class="hero">
+            <i class="fa-solid fa-gear"></i>
+            <h2 style="margin-top:15px; font-weight: 800; margin-bottom: 0;">About ProStudy</h2>
+            <p id="status-msg">Checking system status...</p>
+        </div>
+
+        <div class="list-box">
+            <div class="row">
+                <span>App Version</span>
+                <b id="apk-val">Loading...</b>
+            </div>
+            <div class="row">
+                <span>Content Version</span>
+                <b id="current-content">2.1.0</b>
+            </div>
+            <div class="row">
+                <span>Latest Content Version</span>
+                <b id="latest-content" class="red-tag">2.1.0</b>
+            </div>
+            <div class="row">
+                <span>Latest App Version</span>
+                <b class="red-tag">2.0.0</b>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleVersions(show) {
+            const page = document.getElementById('versions-page');
+            show ? page.classList.add('active') : page.classList.remove('active');
+        }
+
+        function goHome() {
+          window.location.href = "dashboard.html";
+        }
+
+        window.onload = function() {
+            // 1. App Version Check
+            let label = document.getElementById('apk-val');
+            if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.getAppVersion) {
+                label.innerText = window.AndroidBridge.getAppVersion();
+            } else {
+                label.innerText = "Cannot Get App Version";
+            }
+
+            // 2. DYNAMIC STATUS LOGIC
+            let current = document.getElementById('current-content').innerText;
+            let latest = document.getElementById('latest-content').innerText;
+            let status = document.getElementById('status-msg');
+
+            if (current === latest) {
+                status.innerText = "Your software is up to date.";
+                status.style.color = "var(--success)";
+            } else {
+                status.innerText = "A new update is available.";
+                status.style.color = "var(--warning)";
+            }
+        };
+    </script>
+</body>
+</html>
