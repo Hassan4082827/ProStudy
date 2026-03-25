@@ -45,8 +45,6 @@ ProStudy-Web/
 ├── homework.html           <-- Academic Assignment Module
 ├── news.html               <-- School-Specific Update Feed
 ├── request.html            <-- User Inquiry & Feedback Portal
-├── about.html              <--
-About ProStudy
-├── README.md               <--
-Description of ProStudy
+├── about.html              <-- About ProStudy
+├── README.md               <-- Description of ProStudy
 └── LICENSE                 <-- Legal Framework
