@@ -129,14 +129,6 @@
                 <p>Build and live content data</p>
             </div>
         </div>
-
-        <div class="v-card">
-            <i class="fa-solid fa-microchip"></i>
-            <div class="info">
-                <h3>System Info</h3>
-                <p>Hardware and ID details</p>
-            </div>
-        </div>
     </div>
 
     <div id="versions-page">
@@ -158,15 +150,15 @@
             </div>
             <div class="row">
                 <span>Content Version</span>
-                <b id="current-content">2.1.0</b>
+                <b id="current-content">2.1.1</b>
             </div>
             <div class="row">
                 <span>Latest Content Version</span>
-                <b id="latest-content" class="red-tag">2.1.0</b>
+                <b id="latest-content" class="red-tag">2.1.1</b>
             </div>
             <div class="row">
                 <span>Latest App Version</span>
-                <b class="red-tag">2.0.0</b>
+                <b class="red-tag">2.1.2</b>
             </div>
         </div>
     </div>
@@ -184,10 +176,10 @@
         window.onload = function() {
             // 1. App Version Check
             let label = document.getElementById('apk-val');
-            if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.getAppVersion) {
-                label.innerText = window.AndroidBridge.getAppVersion();
+            if (typeof window.ProStudyApp !== 'undefined' && window.ProStudyApp.getAppVersion) {
+                label.innerText = window.ProStudy.getAppVersion();
             } else {
-                label.innerText = "Cannot Get App Version";
+                label.innerText = "Web Mode";
             }
 
             // 2. DYNAMIC STATUS LOGIC
