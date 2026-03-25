@@ -1,9 +1,9 @@
-# ProStudy System Infrastructure `v2.0.0`
+# ProStudy System Infrastructure `v2.1.1`
 
-![Version](https://img.shields.io/badge/Version-2.0.0-blue?style=for-the-badge) ![Platform](https://img.shields.io/badge/Developed_on-Mobile-orange?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Online-red?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-2.1.1-blue?style=for-the-badge) ![Platform](https://img.shields.io/badge/Developed_on-Mobile-orange?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Online-red?style=for-the-badge)
 
 > [!IMPORTANT]
-> **ProStudy v2.0.0** is a private, custom-engineered education management platform. This system is developed exclusively for my school environment and is not a public utility.
+> **ProStudy v2.1.1** is a private, custom-engineered education management platform. This system is developed exclusively for my school environment and is not a public utility.
 
 ---
 
@@ -45,4 +45,8 @@ ProStudy-Web/
 ├── homework.html           <-- Academic Assignment Module
 ├── news.html               <-- School-Specific Update Feed
 ├── request.html            <-- User Inquiry & Feedback Portal
+├── about.html              <--
+About ProStudy
+├── README.md               <--
+Description of ProStudy
 └── LICENSE                 <-- Legal Framework
