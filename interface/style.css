@@ -143,6 +143,7 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     border: 1px solid rgba(255,255,255,0.7);
     transition: 0.2s;
+    position: relative;
 }
 
 .nav-card:active { transform: scale(0.96); }
@@ -176,4 +177,34 @@ body {
 
 a {
     text-decoration: none;
+}
+.border-wrapper::before {
+  position: absolute;
+  content: '';
+  inset: -150%;
+  border-radius: inherit;
+  background: conic-gradient(transparent 0deg 90deg, #2563eb 90deg 160deg, transparent 160deg 270deg, #60a5fa 270deg 340deg, transparent 340deg 360deg);
+  animation: spin 4s linear infinite;
+  filter: blur(8px) brightness(1.6);
+}
+
+.border-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  z-index: -1;
+}
+
+.border-wrapper {
+  position: relative;
+  padding: 3px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+@keyframes spin{
+from{ transform:rotate(0deg); }
+to{ transform:rotate(360deg); }
 }
