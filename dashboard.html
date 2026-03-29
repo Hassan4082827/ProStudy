@@ -19,7 +19,9 @@
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
             display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
         }
-        .modal-card { background: white; padding: 35px 25px; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; }
+        .modal-card { background: white; padding: 35px 25px; border-radius: 30px; width: 100%; max-width: 320px; text-align: center; position: relative; z-index: 2; }
+        
+        
         .modal-card input { width: 100%; padding: 14px; margin: 20px 0; border: 2px solid #f1f5f9; border-radius: 15px; outline: none; font-size: 1rem; }
         .modal-card button { background: var(--brand-blue); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: 700; }
         #confirm-modal {
@@ -86,12 +88,14 @@
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <div id="name-modal">
+      <div class="border-wrapper">
         <div class="modal-card">
-            <img src="https://i.ibb.co/kgbBZgd5/main.png" width="70" style="border-radius:50%; margin-bottom:10px;">
+            <img src="assets/main.png" width="70" style="border-radius:50%; margin-bottom:10px;">
             <h3>Welcome</h3>
             <p style="color:#64748b; font-size:0.9rem;">Please enter your name</p>
             <input type="text" id="user-name-input" placeholder="Your Name" maxlength="15">
             <button onclick="saveName()">Enter ProStudy</button>
+        </div>
         </div>
     </div>
 
@@ -119,27 +123,27 @@
         <h1 class="greeting-h1" id="welcome-text">Hey, User 👋</h1>
 
         <div class="stack">
-            <a href="homework.html" class="nav-card">
+            <div class="border-wrapper"><a href="homework.html" class="nav-card">
                 <div class="icon-sq bg-blue"><i class="fa fa-book-open"></i></div>
                 <div class="info"><h3>Homework</h3><p>Check assignments</p></div>
-            </a>
+            </a></div>
             
-            <a href="news.html" class="nav-card">
+            <div class="border-wrapper"><a href="news.html" class="nav-card">
                 <div class="icon-sq bg-orange"><i class="fa fa-bullhorn"></i></div>
                 <div class="info"><h3>News Feed</h3><p>Latest school info</p></div>
-            </a>
+            </a></div>
 
-            <a href="request.html" class="nav-card">
+            <div class="border-wrapper"><a href="request.html" class="nav-card">
                 <div class="icon-sq bg-purple"><i class="fa fa-message"></i></div>
                 <div class="info"><h3>Requests</h3><p>Send a message</p></div>
-            </a>
+            </a></div>
             
-            <a href="about.html" class="nav-card">
+            <div class="border-wrapper"><a href="about.html" class="nav-card">
               <div class="icon-sq bg-gray">
                 <i class="fa fa-gear"></i>
               </div>
               <div class="info"><h3>About</h3><p>About ProStudy</p></div>
-            </a>
+            </a></div>
         </div>
     </main>
 
