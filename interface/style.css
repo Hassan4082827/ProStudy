@@ -163,6 +163,7 @@ body {
 .bg-orange { background: #fff7ed; color: #f59e0b; }
 .bg-purple { background: #faf5ff; color: #a855f7; }
 .bg-gray { background: #f8f8f8; color: gray; }
+.bg-yellow { background: #fffee0; color: #faf200; }
 
 .info h3 {
     font-size: 1.05rem;
