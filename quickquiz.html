@@ -158,7 +158,7 @@
         }
 
         function finalStart() {
-            if(window.AndroidBridge) window.AndroidBridge.saveFullQuiz(JSON.stringify(questions));
+            if(window.ProStudyApp) window.ProStudyApp.saveFullQuiz(JSON.stringify(questions));
             renderQuiz(questions);
         }
 
