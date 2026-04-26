@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Quiz Builder</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        h2 { margin-top: 0; color: var(--primary); }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add { background: var(--primary); color: white; }
+        .btn-add:hover { background: var(--primary-hover); }
+
+        .btn-finish { background: #10b981; color: white; }
+        .btn-finish:hover { background: #059669; }
+
+        .btn-submit { background: var(--primary); color: white; width: 100%; margin-top: 1rem; font-size: 1.1rem;}
+
+        .hidden { display: none; }
+
+        .quiz-card {
+            border-left: 5px solid var(--primary);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .count-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* History Design */
+        .history-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .history-item:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+        .history-item small { color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="setup-section" class="card">
+        <h2>Create Your Quiz</h2>
+        <div id="question-count" class="count-badge">Questions added: 0</div>
+        
+        <div class="input-group">
+            <label>Question</label>
+            <input type="text" id="input-q" placeholder="Enter your Question...">
+        </div>
+        
+        <div class="input-group">
+            <label>Its Answer</label>
+            <input type="text" id="input-a" placeholder="Enter its Answer...">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-add" onclick="addQuestion()">Add Question</button>
+            <button class="btn-finish" id="btn-enough" onclick="saveAndStart()" disabled>Enough (Start)</button>
+        </div>
+    </div>
+
+    <div id="quiz-section" class="hidden">
+        <div id="quiz-container"></div>
+        <button class="btn-submit" onclick="gradeQuiz()">Submit All Answers</button>
+    </div>
+
+    <div id="result-section" class="card hidden">
+        <div class="score-display">
+            <h2>Results</h2>
+            <p id="score-text"></p>
+            <button class="btn-add" onclick="location.reload()">Create New Quiz</button>
+        </div>
+    </div>
+
+    <div id="history-section">
+        <h3 style="margin-bottom: 15px;">Previous Quizzes</h3>
+        <div id="history-log"></div>
+    </div>
+</div>
+
+<script>
+    let questions = [];
+
+    const setupSection = document.getElementById('setup-section');
+    const quizSection = document.getElementById('quiz-section');
+    const resultSection = document.getElementById('result-section');
+    const quizContainer = document.getElementById('quiz-container');
+
+    function addQuestion() {
+        const qInput = document.getElementById('input-q');
+        const aInput = document.getElementById('input-a');
+
+        if (qInput.value.trim() === "" || aInput.value.trim() === "") {
+            alert("Please fill in both fields!");
+            return;
+        }
+
+        questions.push({
+            question: qInput.value.trim(),
+            answer: aInput.value.trim().toLowerCase()
+        });
+
+        qInput.value = "";
+        aInput.value = "";
+        qInput.focus();
+        document.getElementById('question-count').innerText = `Questions added: ${questions.length}`;
+        document.getElementById('btn-enough').disabled = false;
+    }
+
+    // Logic to save the whole array to Java before starting
+    function saveAndStart() {
+        if (window.AndroidBridge) {
+            window.AndroidBridge.saveFullQuiz(JSON.stringify(questions));
+        }
+        startQuiz(questions);
+    }
+
+    function startQuiz(quizData) {
+        questions = quizData; // Use the provided array (from history or current setup)
+        setupSection.classList.add('hidden');
+        quizSection.classList.remove('hidden');
+        document.getElementById('history-section').classList.add('hidden');
+        quizContainer.innerHTML = "";
+
+        questions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'card quiz-card';
+            card.innerHTML = `
+                <p><strong>Question ${index + 1}:</strong> ${item.question}</p>
+                <input type="text" class="user-answer" data-index="${index}" placeholder="Type your answer here...">
+            `;
+            quizContainer.appendChild(card);
+        });
+    }
+
+    function gradeQuiz() {
+        const userInputs = document.querySelectorAll('.user-answer');
+        let score = 0;
+        userInputs.forEach(input => {
+            const index = input.getAttribute('data-index');
+            if (input.value.trim().toLowerCase() === questions[index].answer) score++;
+        });
+
+        quizSection.classList.add('hidden');
+        resultSection.classList.remove('hidden');
+        document.getElementById('score-text').innerHTML = `You got <strong>${score}</strong> out of <strong>${questions.length}</strong> correct!`;
+    }
+
+    // Called by Java to display history
+    function loadHistoryList(allQuizzesJson) {
+        const allQuizzes = (typeof allQuizzesJson === 'string') ? JSON.parse(allQuizzesJson) : allQuizzesJson;
+        const log = document.getElementById('history-log');
+        log.innerHTML = "";
+        
+        allQuizzes.forEach((quizArray, index) => {
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `<small>QUIZ SET #${index + 1}</small><br>${quizArray.length} Questions Saved`;
+            item.onclick = () => startQuiz(quizArray);
+            log.appendChild(item);
+        });
+    }
+</script>
+
+</body>
+</html>
