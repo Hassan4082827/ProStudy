@@ -101,7 +101,7 @@
 
     <header class="top-container">
       <div class="logo-area">
-          <img src="https://i.ibb.co/kgbBZgd5/main.png" class="logo-img">
+          <img src="assets/main.png" class="logo-img">
           <h2>ProStudy</h2>
       </div>
       <button id="ls-open" onclick="toggleMenu()"><i class="fa fa-bars-staggered"></i></button>
@@ -114,6 +114,7 @@
         <li><a href="news.html"><i class="fa fa-newspaper"></i> News Feed</a></li>
         <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
         <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
+        <li><a href="quickquiz.html"><i class="fa fa-bolt"></i> QuickQuiz</a></li>
         <li><a href="about.html"><i class="fa fa-gear"></i> About</a></li>
       </ul>
       <button class="delete-btn" onclick="openConfirm()">Reset Data</button>
@@ -138,11 +139,14 @@
                 <div class="info"><h3>Requests</h3><p>Send a message</p></div>
             </a></div>
             
+            <div class="border-wrapper"><a href="quickquiz.html" class="nav-card">
+                <div class="icon-sq bg-yellow"><i class="fa fa-bolt"></i></div>
+                <div class="info"><h3>QuickQuiz</h3><p>Take Quiz</p></div>
+            </a></div>
+            
             <div class="border-wrapper"><a href="about.html" class="nav-card">
-              <div class="icon-sq bg-gray">
-                <i class="fa fa-gear"></i>
-              </div>
-              <div class="info"><h3>About</h3><p>About ProStudy</p></div>
+                <div class="icon-sq bg-gray"><i class="fa fa-gear"></i></div>
+                <div class="info"><h3>About</h3><p>About ProStudy</p></div>
             </a></div>
         </div>
     </main>
@@ -161,29 +165,49 @@
 
     <script>
         const welcomeText = document.getElementById('welcome-text');
-        const nameModal = document.getElementById('name-modal');
-        const ls = document.getElementById('ls');
-        const overlay = document.getElementById('overlay');
+const nameModal = document.getElementById('name-modal');
+const ls = document.getElementById('ls');
+const overlay = document.getElementById('overlay');
 
-        window.onload = () => {
-            const savedName = localStorage.getItem('prostudy_user');
-            if (!savedName) {
-                nameModal.style.display = 'flex';
-            } else {
-                welcomeText.innerText = `Hey, ${savedName} 👋`;
-            }
-        };
+// 1. Initial Load: Check if name exists
+window.onload = () => {
+    const savedName = localStorage.getItem('prostudy_user');
+    if (!savedName) {
+        nameModal.style.display = 'flex';
+    } else {
+        welcomeText.innerText = `Hey, ${savedName} 👋`;
+        // Token sync in background if already logged in
+        syncIdentity(savedName);
+    }
+};
 
-        function saveName() {
-            const nameInput = document.getElementById('user-name-input').value;
-            if (nameInput.trim()) {
-                localStorage.setItem('prostudy_user', nameInput);
-                welcomeText.innerText = `Hey, ${nameInput} 👋`;
-                nameModal.style.display = 'none';
-            }
-        }
+// 2. Save Name & Link with Java
+function saveName() {
+    const nameInput = document.getElementById('user-name-input').value;
+    if (nameInput.trim()) {
+        localStorage.setItem('prostudy_user', nameInput);
+        welcomeText.innerText = `Hey, ${nameInput} 👋`;
+        
+        syncIdentity(nameInput); // Java Bridge Call
 
-        function openConfirm() {
+        nameModal.style.display = 'none';
+    }
+}
+
+// Helper to call Java safely
+function syncIdentity(name) {
+    if (typeof ProStudyApp !== 'undefined' && ProStudyApp.saveUserIdentity) {
+        ProStudyApp.saveUserIdentity(name); 
+    }
+}
+
+// 3. Menu & UI Logic
+function toggleMenu() {
+    ls.classList.toggle('active');
+    overlay.style.display = ls.classList.contains('active') ? 'block' : 'none';
+}
+
+function openConfirm() {
     document.getElementById('confirm-modal').style.display = 'flex';
 }
 
@@ -195,6 +219,7 @@ function confirmReset() {
     localStorage.clear();
     location.reload();
 }
+
     </script>
     <script src="interactivity/script.js"></script>
 </body>
