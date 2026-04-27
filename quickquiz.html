@@ -158,9 +158,11 @@
         }
 
         function finalStart() {
-            if(window.ProStudyApp) window.ProStudyApp.saveFullQuiz(JSON.stringify(questions));
-            renderQuiz(questions);
-        }
+    if (typeof ProStudyApp !== 'undefined' && ProStudyApp.saveFullQuiz) {
+        ProStudyApp.saveFullQuiz(JSON.stringify(questions));
+    }
+    renderQuiz(questions);
+}
 
         function renderQuiz(data) {
             questions = data;

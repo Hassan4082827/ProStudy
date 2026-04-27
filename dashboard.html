@@ -164,49 +164,85 @@
 </div>
 
     <script>
-        const welcomeText = document.getElementById('welcome-text');
+const welcomeText = document.getElementById('welcome-text');
 const nameModal = document.getElementById('name-modal');
 const ls = document.getElementById('ls');
 const overlay = document.getElementById('overlay');
 
-// 1. Initial Load: Check if name exists
+// 🚀 On Load
 window.onload = () => {
     const savedName = localStorage.getItem('prostudy_user');
+
     if (!savedName) {
         nameModal.style.display = 'flex';
     } else {
         welcomeText.innerText = `Hey, ${savedName} 👋`;
-        // Token sync in background if already logged in
         syncIdentity(savedName);
     }
 };
 
-// 2. Save Name & Link with Java
+// 💾 Save Name
 function saveName() {
     const nameInput = document.getElementById('user-name-input').value;
+
     if (nameInput.trim()) {
         localStorage.setItem('prostudy_user', nameInput);
         welcomeText.innerText = `Hey, ${nameInput} 👋`;
-        
-        syncIdentity(nameInput); // Java Bridge Call
+
+        syncIdentity(nameInput);
 
         nameModal.style.display = 'none';
     }
 }
 
-// Helper to call Java safely
+// 🔗 SMART SYNC (NO DELAY ISSUE)
 function syncIdentity(name) {
-    if (typeof ProStudyApp !== 'undefined' && ProStudyApp.saveUserIdentity) {
-        ProStudyApp.saveUserIdentity(name); 
-    }
+    const synced = localStorage.getItem('prostudy_synced');
+    if (synced) return;
+
+    let tries = 0;
+
+    const tryConnect = setInterval(() => {
+        if (typeof ProStudyApp !== 'undefined' && ProStudyApp.saveUserIdentity) {
+
+            ProStudyApp.saveUserIdentity(name);
+            localStorage.setItem('prostudy_synced', 'true');
+
+            clearInterval(tryConnect);
+        }
+
+        tries++;
+
+        if (tries > 50) {
+            clearInterval(tryConnect);
+            console.log("Bridge not found");
+        }
+
+    }, 100);
 }
 
-// 3. Menu & UI Logic
+// ☁️ FIREBASE SAVE (NO DUPLICATES)
+function saveTokenToServer(name, token) {
+    fetch("https://prostudy-ef047-default-rtdb.firebaseio.com/users/" + token + ".json", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            token: token,
+            time: Date.now()
+        })
+    });
+}
+
+// 📂 MENU
 function toggleMenu() {
     ls.classList.toggle('active');
     overlay.style.display = ls.classList.contains('active') ? 'block' : 'none';
 }
 
+// ⚠️ RESET CONFIRM
 function openConfirm() {
     document.getElementById('confirm-modal').style.display = 'flex';
 }
@@ -219,8 +255,7 @@ function confirmReset() {
     localStorage.clear();
     location.reload();
 }
-
-    </script>
+</script>
     <script src="interactivity/script.js"></script>
 </body>
 </html>
