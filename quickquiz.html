@@ -1,211 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QuickQuiz | ProStudy</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="interface/style.css"> <style>
-        .hidden { display: none; }
-        
-        /* Premium Button Styles */
-        .qq-btn-primary {
-            background: var(--brand-blue, #3b82f6);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 18px;
-            font-weight: 800;
-            font-size: 1rem;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        .qq-btn-primary:active { transform: scale(0.95); opacity: 0.9; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickQuiz</title>
 
-        .qq-btn-success {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 18px;
-            font-weight: 800;
-            opacity: 0.5;
-            transition: 0.3s;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        /* Quiz Specific UI */
-        .qq-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .qq-input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #f1f5f9;
-            border-radius: 15px;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .qq-input:focus { border-color: var(--brand-blue); background: #f8fafc; }
-
-        .qq-badge {
-            background: #eff6ff;
-            color: var(--brand-blue);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-    </style>
+<style>
+body{font-family:Arial;margin:0;padding:20px;background:#f4f7ff;}
+.qq-card{background:white;padding:15px;border-radius:15px;margin-bottom:10px;}
+.qq-input{width:100%;padding:10px;margin:5px 0;}
+button{padding:10px;border:none;border-radius:10px;background:#3b82f6;color:white;}
+.hidden{display:none;}
+</style>
 </head>
+
 <body>
 
-    <div class="overlay" id="overlay"></div>
+<h2>QuickQuiz</h2>
 
-    <header class="top-container">
-      <div class="logo-area">
-          <img src="assets/QuickQuiz.png" class="logo-img">
-          <h2>QuickQuiz</h2>
-      </div>
-      <button id="ls-open"><i class="fa fa-bars-staggered"></i></button>
-    </header>
+<div id="setup">
 
-    <nav id="ls">
-      <button id="ls-close"><i class="fa fa-xmark"></i></button>
-      <ul>
-        <li><a href="dashboard.html"><i class="fa fa-house"></i> Home</a></li>
-        <li><a href="news.html"><i class="fa fa-newspaper"></i> News Feed</a></li>
-        <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
-        <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
-        <li><a href="quickquiz.html" class="active"><i class="fa fa-bolt"></i> QuickQuiz</a></li>
-        <li><a href="about.html"><i class="fa fa-gear"></i> About</a></li>
-      </ul>
-    </nav>
+<input id="q" class="qq-input" placeholder="Question">
+<input id="a" class="qq-input" placeholder="Answer">
 
-    <main class="main-content">
-        <section id="setup-view">
-            <h1 class="greeting-h1">QuickQuiz</h1>
-            <div class="qq-card">
-                <div id="q-count" class="qq-badge">0 Questions Added</div>
-                <input type="text" id="q-in" class="qq-input" placeholder="Enter your Question...">
-                <input type="text" id="a-in" class="qq-input" placeholder="Enter its Answer...">
-                
-                <div style="display:flex; gap:12px; margin-top:15px;">
-                    <button class="qq-btn-primary" style="flex:1;" onclick="addQ()">
-                        <i class="fa fa-plus"></i> Add
-                    </button>
-                    <button id="go-btn" class="qq-btn-success" style="flex:1.2;" onclick="finalStart()" disabled>
-                        <i class="fa fa-play"></i> Start Quiz
-                    </button>
-                </div>
-            </div>
-        </section>
+<button onclick="add()">Add</button>
+<button onclick="startQuiz()">Start Quiz</button>
 
-        <section id="play-view" class="hidden">
-            <h1 class="greeting-h1">Solve Quiz</h1>
-            <div id="questions-list"></div>
-            <button class="qq-btn-primary" style="margin-top: 20px;" onclick="checkResults()">
-                Submit All Answers
-            </button>
-        </section>
+</div>
 
-        <section id="result-view" class="hidden" style="text-align: center;">
-            <div class="qq-card">
-                <div class="icon-sq bg-purple" style="margin: 0 auto 15px auto;"><i class="fa fa-award"></i></div>
-                <h2 id="res-score" style="font-weight: 800; margin-bottom: 20px;"></h2>
-                <button class="qq-btn-primary" onclick="location.reload()">Finish</button>
-            </div>
-        </section>
+<div id="play" class="hidden"></div>
 
-        <section id="history-view">
-            <h3 style="margin: 30px 0 15px 0; font-weight: 800; color:#64748b;">Saved Quizzes</h3>
-            <div id="history-list" class="stack"></div>
-        </section>
-    </main>
+<h3>History</h3>
+<div id="history"></div>
 
-    <script src="interactivity/script.js"></script>
+<script>
 
-    <script>
-        let questions = [];
+let quiz = [];
 
-        function addQ() {
-            const q = document.getElementById('q-in'), a = document.getElementById('a-in');
-            if(q.value.trim() && a.value.trim()){
-                questions.push({ q: q.value, a: a.value.toLowerCase().trim() });
-                q.value = ""; a.value = ""; q.focus();
-                document.getElementById('q-count').innerText = `${questions.length} Questions Added`;
-                const btn = document.getElementById('go-btn');
-                btn.disabled = false; btn.style.opacity = "1";
-            }
-        }
+function add(){
+    quiz.push({
+        q: document.getElementById("q").value,
+        a: document.getElementById("a").value.toLowerCase()
+    });
 
-        function finalStart() {
-    if (typeof ProStudyApp !== 'undefined' && ProStudyApp.saveFullQuiz) {
-        ProStudyApp.saveFullQuiz(JSON.stringify(questions));
-    }
-    renderQuiz(questions);
+    document.getElementById("q").value="";
+    document.getElementById("a").value="";
 }
 
-        function renderQuiz(data) {
-            questions = data;
-            document.getElementById('setup-view').classList.add('hidden');
-            document.getElementById('history-view').classList.add('hidden');
-            document.getElementById('play-view').classList.remove('hidden');
-            const list = document.getElementById('questions-list');
-            list.innerHTML = "";
-            questions.forEach((item, i) => {
-                list.innerHTML += `
-                <div class="qq-card">
-                    <p style="font-weight:800; margin-bottom:10px; font-size:1.1rem;">Q${i+1}: ${item.q}</p>
-                    <input type="text" class="ans-field" data-idx="${i}" class="qq-input" style="width:100%; padding:14px; border-radius:15px; border:2px solid #f1f5f9; outline:none;" placeholder="Your Answer...">
-                </div>`;
-            });
-        }
+function startQuiz(){
 
-        function checkResults() {
-            let score = 0;
-            document.querySelectorAll('.ans-field').forEach(inp => {
-                if(inp.value.toLowerCase().trim() === questions[inp.dataset.idx].a) score++;
-            });
-            document.getElementById('play-view').classList.add('hidden');
-            document.getElementById('result-view').classList.remove('hidden');
-            document.getElementById('res-score').innerHTML = `Score: ${score} / ${questions.length}`;
-        }
+    if(typeof ProStudyApp !== "undefined"){
+        ProStudyApp.saveFullQuiz(JSON.stringify(quiz));
+    }
 
-        function loadHistoryList(json) {
-            const container = document.getElementById('history-list');
-            container.innerHTML = "";
-            const data = JSON.parse(json);
-            data.forEach((set, i) => {
-                const div = document.createElement('div');
-                div.className = "border-wrapper"; // Reusing your global spinning border
-                div.innerHTML = `
-                <div class="nav-card">
-                    <div class="icon-sq bg-blue"><i class="fa fa-bolt"></i></div>
-                    <div class="info"><h3>Quiz Set #${i+1}</h3><p>${set.length} Questions</p></div>
-                </div>`;
-                div.onclick = () => renderQuiz(set);
-                container.appendChild(div);
+    renderQuiz(quiz);
+}
+
+function renderQuiz(data){
+
+    document.getElementById("setup").classList.add("hidden");
+    let div = document.getElementById("play");
+    div.classList.remove("hidden");
+
+    div.innerHTML = "";
+
+    data.forEach((q,i)=>{
+        div.innerHTML += `
+        <div class="qq-card">
+            <b>Q${i+1}: ${q.q}</b>
+            <input class="ans" data-i="${i}" placeholder="Answer">
+        </div>`;
+    });
+}
+
+function loadHistory(){
+    console.log("Checking for ProStudyApp...");
+    if(typeof ProStudyApp !== "undefined"){
+        try {
+            let json = ProStudyApp.loadAllQuizzes();
+            console.log("Data received: " + json);
+            let data = JSON.parse(json);
+            
+            let h = document.getElementById("history");
+            h.innerHTML = "";
+
+            if(data.length === 0) {
+                h.innerHTML = "<p>No history found.</p>";
+                return;
+            }
+
+            data.forEach((item, i) => {
+                // Defensive check to avoid crash if data is corrupted
+                let quizData = (typeof item.data === 'string') ? JSON.parse(item.data) : item.data;
+
+                let div = document.createElement("div");
+                div.className = "qq-card";
+                div.innerHTML = `<b>Quiz #${data.length - i}</b> (${quizData.length} Questions)`;
+                div.onclick = function(){ renderQuiz(quizData); };
+                h.appendChild(div);
             });
+        } catch (e) {
+            console.error("Crash prevented: " + e);
         }
-    </script>
+    } else {
+        // Retry after 500ms if bridge isn't ready yet
+        setTimeout(loadHistory, 500);
+    }
+}
+
+loadHistory();
+
+</script>
+
 </body>
 </html>
