@@ -27,6 +27,22 @@ h1{margin:0 0 0 10px;font-size:26px;}
 .row b{font-family:monospace;}
 .red{color:var(--warn);}
 .green{color:var(--success);}
+.sync-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 20px;
+    padding: 22px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.sync-card:active { transform: scale(0.96); }
+.sync-card i { font-size: 26px; margin-right: 18px; color: #fff; }
+.sync-card h3 { margin: 0; font-size: 18px; }
+.sync-card p { margin: 4px 0 0; font-size: 12px; opacity: 0.9; }
 </style>
 </head>
 <body>
@@ -47,6 +63,13 @@ h1{margin:0 0 0 10px;font-size:26px;}
 <h3>Versions</h3>
 <p style="margin:4px 0;color:var(--dim)">Build & update information</p>
 </div>
+</div>
+<div class="sync-card" id="googleBindCard" onclick="triggerGoogleUpgrade()" style="display: none;">
+    <i class="fa-brands fa-google"></i>
+    <div>
+        <h3>Bind to Google</h3>
+        <p>Convert Guest account to Permanent</p>
+    </div>
 </div>
 
 <div id="versions">
@@ -131,6 +154,61 @@ window.onload = () => {
     // Attempt 1
     if (!syncWithJava()) {
         // Attempt 2 (Recursive hunt for the bridge)
+        let attempts = 0;
+        let checkLoop = setInterval(() => {
+            attempts++;
+            if (syncWithJava() || attempts > 10) clearInterval(checkLoop);
+        }, 50);
+    }
+};
+function toggle(show) {
+    document.getElementById("versions").classList.toggle("active", show);
+}
+
+// YEH FUNCTION ADD KARO (Bridge Trigger)
+function triggerGoogleUpgrade() {
+    if (typeof ProStudyApp !== 'undefined') {
+        ProStudyApp.startGoogleSignIn();
+    }
+}
+
+function syncWithJava() {
+    let appLabel = document.getElementById("appVersion");
+    let status = document.getElementById("status");
+    let bindCard = document.getElementById("googleBindCard"); // Target the bind card
+    
+    let latestCode = 300; 
+
+    if (typeof ProStudyApp !== 'undefined') {
+        // SABOOT: Show the Bind Card because we are in the App!
+        bindCard.style.display = "flex"; 
+        
+        if (ProStudyApp.getVersionName) {
+            let realName = ProStudyApp.getVersionName();
+            appLabel.innerText = realName;
+        }
+
+        if (ProStudyApp.getVersionCode) {
+            let localCode = parseInt(ProStudyApp.getVersionCode());
+            if (localCode >= latestCode) {
+                status.innerText = "Your app is up to date";
+                status.style.color = "var(--success)";
+            } else {
+                status.innerText = "Update available";
+                status.style.color = "var(--warn)";
+            }
+        }
+        return true; 
+    } else {
+        appLabel.innerText = "Web Mode";
+        status.innerText = "Web Mode detected";
+        bindCard.style.display = "none"; // Hide if on normal browser
+        return false;
+    }
+}
+
+window.onload = () => {
+    if (!syncWithJava()) {
         let attempts = 0;
         let checkLoop = setInterval(() => {
             attempts++;
