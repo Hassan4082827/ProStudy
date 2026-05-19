@@ -27,22 +27,61 @@ h1{margin:0 0 0 10px;font-size:26px;}
 .row b{font-family:monospace;}
 .red{color:var(--warn);}
 .green{color:var(--success);}
-.sync-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    margin: 20px;
-    padding: 22px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
-    cursor: pointer;
-    transition: transform 0.2s;
+.google-btn{
+    background:#fff;
+    border:1px solid #dadce0;
+    border-radius:16px;
+    margin:20px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    transition:.18s ease;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
 }
-.sync-card:active { transform: scale(0.96); }
-.sync-card i { font-size: 26px; margin-right: 18px; color: #fff; }
-.sync-card h3 { margin: 0; font-size: 18px; }
-.sync-card p { margin: 4px 0 0; font-size: 12px; opacity: 0.9; }
+
+.google-btn:hover{
+    background:#f8f9fa;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.google-btn:active{
+    transform:scale(.98);
+}
+
+.google-logo{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:14px;
+    flex-shrink:0;
+}
+
+.google-logo svg{
+    width:20px;
+    height:20px;
+}
+
+.google-text{
+    display:flex;
+    flex-direction:column;
+}
+
+.google-title{
+    font-size:15px;
+    font-weight:600;
+    color:#202124;
+}
+
+.google-subtitle{
+    font-size:12px;
+    color:#5f6368;
+    margin-top:2px;
+}
 </style>
 </head>
 <body>
@@ -64,12 +103,23 @@ h1{margin:0 0 0 10px;font-size:26px;}
 <p style="margin:4px 0;color:var(--dim)">Build & update information</p>
 </div>
 </div>
-<div class="sync-card" id="googleBindCard" onclick="triggerGoogleUpgrade()" style="display: none;">
-    <i class="fa-brands fa-google"></i>
-    <div>
-        <h3>Bind to Google</h3>
-        <p>Convert Guest account to Permanent</p>
-    </div>
+<div class="google-btn" id="googleBindCard"
+onclick="triggerGoogleUpgrade()" style="display: none;">
+
+<div class="google-logo">
+<svg width="18" height="18" viewBox="0 0 48 48">
+  <path fill="#EA4335" d="M24 9.5c3.54 0 6.73 1.22 9.24 3.6l6.9-6.9C35.9 2.3 30.4 0 24 0 14.64 0 6.56 5.38 2.6 13.22l8.04 6.24C12.6 13.3 17.8 9.5 24 9.5z"/>
+  <path fill="#4285F4" d="M46.5 24.5c0-1.64-.14-3.2-.4-4.7H24v9h12.7c-.54 2.9-2.18 5.36-4.64 7l7.2 5.6C43.9 37.2 46.5 31.4 46.5 24.5z"/>
+  <path fill="#FBBC05" d="M10.64 28.54A14.5 14.5 0 0 1 9.5 24c0-1.58.28-3.1.78-4.54l-8.04-6.24A24 24 0 0 0 0 24c0 3.86.92 7.5 2.56 10.78l8.08-6.24z"/>
+  <path fill="#34A853" d="M24 48c6.48 0 11.92-2.14 15.9-5.82l-7.2-5.6c-2 1.34-4.56 2.12-8.7 2.12-6.2 0-11.4-3.8-13.36-9.96l-8.08 6.24C6.52 42.62 14.64 48 24 48z"/>
+</svg>
+</div>
+
+<div class="google-text">
+<div class="google-title">Continue with Google</div>
+<div class="google-subtitle">Secure your ProStudy account</div>
+</div>
+
 </div>
 
 <div id="versions">
@@ -112,60 +162,10 @@ h1{margin:0 0 0 10px;font-size:26px;}
 
 <script>
 function toggle(show) {
-    document.getElementById("versions").classList.toggle("active", show);
+    document.getElementById("versions")
+        .classList.toggle("active", show);
 }
 
-function syncWithJava() {
-    let appLabel = document.getElementById("appVersion");
-    let status = document.getElementById("status");
-    
-    // REALITY: Your current APK target is 3
-    let latestCode = 300; 
-
-    if (typeof ProStudyApp !== 'undefined') {
-        
-        // 1. THE USER'S VIEW: Inject the REAL version name into the HTML
-        if (ProStudyApp.getVersionName) {
-            let realName = ProStudyApp.getVersionName();
-            appLabel.innerText = realName; // This changes "Loading..." to "2.1.3"
-        }
-
-        // 2. THE SYSTEM'S VIEW: Compare version codes
-        if (ProStudyApp.getVersionCode) {
-            let localCode = parseInt(ProStudyApp.getVersionCode());
-            
-            if (localCode >= latestCode) {
-                status.innerText = "Your app is up to date";
-                status.style.color = "var(--success)";
-            } else {
-                status.innerText = "Update available";
-                status.style.color = "var(--warn)";
-            }
-        }
-        return true; 
-    } else {
-        appLabel.innerText = "Web Mode";
-        status.innerText = "Web Mode detected";
-        return false;
-    }
-}
-
-window.onload = () => {
-    // Attempt 1
-    if (!syncWithJava()) {
-        // Attempt 2 (Recursive hunt for the bridge)
-        let attempts = 0;
-        let checkLoop = setInterval(() => {
-            attempts++;
-            if (syncWithJava() || attempts > 10) clearInterval(checkLoop);
-        }, 50);
-    }
-};
-function toggle(show) {
-    document.getElementById("versions").classList.toggle("active", show);
-}
-
-// YEH FUNCTION ADD KARO (Bridge Trigger)
 function triggerGoogleUpgrade() {
     if (typeof ProStudyApp !== 'undefined') {
         ProStudyApp.startGoogleSignIn();
@@ -175,44 +175,67 @@ function triggerGoogleUpgrade() {
 function syncWithJava() {
     let appLabel = document.getElementById("appVersion");
     let status = document.getElementById("status");
-    let bindCard = document.getElementById("googleBindCard"); // Target the bind card
-    
-    let latestCode = 300; 
+    let bindCard = document.getElementById("googleBindCard");
+
+    let latestCode = 300;
 
     if (typeof ProStudyApp !== 'undefined') {
-        // SABOOT: Show the Bind Card because we are in the App!
-        bindCard.style.display = "flex"; 
-        
+
+        bindCard.style.display = "flex";
+
         if (ProStudyApp.getVersionName) {
-            let realName = ProStudyApp.getVersionName();
-            appLabel.innerText = realName;
+            appLabel.innerText =
+                ProStudyApp.getVersionName();
         }
 
         if (ProStudyApp.getVersionCode) {
-            let localCode = parseInt(ProStudyApp.getVersionCode());
+
+            let localCode = parseInt(
+                ProStudyApp.getVersionCode()
+            );
+
             if (localCode >= latestCode) {
-                status.innerText = "Your app is up to date";
-                status.style.color = "var(--success)";
+                status.innerText =
+                    "Your app is up to date";
+
+                status.style.color =
+                    "var(--success)";
             } else {
-                status.innerText = "Update available";
-                status.style.color = "var(--warn)";
+                status.innerText =
+                    "Update available";
+
+                status.style.color =
+                    "var(--warn)";
             }
         }
-        return true; 
+
+        return true;
+
     } else {
+
         appLabel.innerText = "Web Mode";
         status.innerText = "Web Mode detected";
-        bindCard.style.display = "none"; // Hide if on normal browser
+
+        bindCard.style.display = "none";
+
         return false;
     }
 }
 
 window.onload = () => {
+
     if (!syncWithJava()) {
+
         let attempts = 0;
+
         let checkLoop = setInterval(() => {
+
             attempts++;
-            if (syncWithJava() || attempts > 10) clearInterval(checkLoop);
+
+            if (syncWithJava() || attempts > 10) {
+                clearInterval(checkLoop);
+            }
+
         }, 50);
     }
 };
