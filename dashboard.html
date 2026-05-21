@@ -197,42 +197,51 @@ function saveName() {
     }
 }
 
-// 🔐 Invoke Native Google Auth SDK
-function triggerGoogleSignIn() {
-    if (typeof ProStudyApp !== 'undefined' && ProStudyApp.startGoogleSignIn) {
-        ProStudyApp.startGoogleSignIn();
-    } else {
-        alert("Google Sign-In requires active Android Application environment context.");
-    }
-}
-
-// 🔄 Native Account Resolution Verification Hook 
+// 🔄 Updated recoverAccount Logic
 function recoverAccount(name) {
+    const gBtn = document.querySelector('.google-btn');
+    const separator = document.querySelector('.or-separator');
+    const modalTitle = document.querySelector('.modal-card h3');
+    const modalDesc = document.querySelector('.modal-card p');
 
-    // Existing account
     if (name) {
+        // Purana user mil gaya
         localStorage.setItem('prostudy_user', name);
         localStorage.setItem('prostudy_auth_type', 'google');
         localStorage.setItem('prostudy_synced', 'true');
-
         welcomeText.textContent = `Hey, ${name} 👋`;
         nameModal.style.display = 'none';
-        return;
+    } else {
+        // Naya user ya Identity unknown
+        nameModal.style.display = 'flex';
+        
+        // Agar user ne abhi Google Sign-in dabaya hai (isAnonymous check via bridge)
+        // toh hum Google button hide karenge. 
+        // Par pehli baar startup par dono dikhenge.
+        const authType = localStorage.getItem('prostudy_auth_type');
+        if (authType === 'google_pending') {
+            if(gBtn) gBtn.style.display = 'none';
+            if(separator) separator.style.display = 'none';
+            modalTitle.innerText = 'Choose Username';
+            modalDesc.innerText = 'Set a nickname for your new account';
+        } else {
+            // "Choose Route" mode (Dono buttons visible)
+            if(gBtn) gBtn.style.display = 'flex';
+            if(separator) separator.style.display = 'flex';
+            modalTitle.innerText = 'Welcome';
+            modalDesc.innerText = 'Choose your entry route';
+        }
     }
-
-    // New Google user
-    nameModal.style.display = 'flex';
-
-    document.querySelector('.google-btn').style.display = 'none';
-
-    document.querySelector('.modal-card h3').innerText =
-        'Choose Username';
-
-    document.querySelector('.modal-card p').innerText =
-        'This name will be used to recognize you';
-
-    document.querySelector('.or-separator').style.display = 'none';
 }
+
+// 🔐 Update triggerGoogleSignIn
+function triggerGoogleSignIn() {
+    if (typeof ProStudyApp !== 'undefined') {
+        localStorage.setItem('prostudy_auth_type', 'google_pending'); // Mark as pending to change modal UI
+        ProStudyApp.startGoogleSignIn();
+    }
+}
+
 
 // 🔗 Identity Sync
 function syncIdentity(name) {
