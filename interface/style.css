@@ -64,7 +64,7 @@ body {
     cursor: pointer;
 }
 
-/* 🔄 FIXED COMPONENT DESIGN */
+/* 🔄 SIDE MENU DESIGN */
 #ls {
     background: var(--glass);
     backdrop-filter: blur(15px);
@@ -78,8 +78,6 @@ body {
     z-index: 200;
     box-shadow: -10px 0 30px rgba(0,0,0,0.1);
     border-left: 1px solid rgba(255, 255, 255, 0.3);
-    
-    /* ✅ THE FIX: Start completely hidden off-screen to the right side */
     transform: translateX(260px); 
     will-change: transform;
 }
@@ -114,7 +112,7 @@ body {
     color: white;
 }
 
-/* 💎 FIXED OVERLAY CONTEXT */
+/* 💎 OVERLAY */
 .overlay {
     position: fixed;
     top: 0;
@@ -168,22 +166,26 @@ body {
 
 .nav-card:active { transform: scale(0.96); }
 
+/* 🛠️ FIXED: EXACT BOX SIZE AND TINT PROPERTIES */
 .icon-sq {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
+    flex-shrink: 0;          /* THE FIX: Stops long text from resizing/squishing the icon */
+    width: 48px;             /* Enforces fixed pixel width */
+    height: 48px;            /* Enforces fixed pixel height */
+    border-radius: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin-right: 18px;
+    color: #ffffff !important; /* Forces the inner icon graphic to always stay crisp white */
 }
 
-.bg-blue { background: #eff6ff; color: #3b82f6; }
-.bg-orange { background: #fff7ed; color: #f59e0b; }
-.bg-purple { background: #faf5ff; color: #a855f7; }
-.bg-gray { background: #f8f8f8; color: gray; }
-.bg-yellow { background: #fffee0; color: #f59e0b; } 
+/* 🎨 CONTRAST COLOR MODIFIERS FOR HIGH READABILITY */
+.bg-blue   { background: #3b82f6 !important; } 
+.bg-orange { background: #f97316 !important; } 
+.bg-yellow { background: #eab308 !important; } 
+.bg-purple { background: #a855f7 !important; } 
+.bg-gray   { background: #64748b !important; } 
 
 .info h3 {
     font-size: 1.05rem;
@@ -193,7 +195,8 @@ body {
 
 .info p {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: #64748b; /* Slightly darkened for better contrast on white backgrounds */
+    line-height: 1.4;
 }
 
 a { text-decoration: none; }
