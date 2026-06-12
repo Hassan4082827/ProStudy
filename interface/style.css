@@ -186,6 +186,7 @@ body {
 .bg-yellow { background: #eab308 !important; } 
 .bg-purple { background: #a855f7 !important; } 
 .bg-gray   { background: #64748b !important; } 
+.bg-black  { background: #000000 !important; }
 
 .info h3 {
     font-size: 1.05rem;
