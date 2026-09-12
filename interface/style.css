@@ -24,8 +24,8 @@ body {
 
 .top-container {
     background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,8 +67,8 @@ body {
 /* 🔄 SIDE MENU DESIGN */
 #ls {
     background: var(--glass);
-    backdrop-filter: blur(7.5px);
-    -webkit-backdrop-filter: blur(7.5px);
+    backdrop-filter: blur(3.75px);
+    -webkit-backdrop-filter: blur(3.75px);
     position: fixed;
     top: 0;
     right: 0; 
@@ -132,8 +132,8 @@ body {
 .overlay.active {
     display: block;
     opacity: 1;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 
 .main-content { padding: 35px 20px; }
@@ -216,8 +216,8 @@ a { text-decoration: none; }
   inset: -30%;
   border-radius: inherit;
   background: conic-gradient(transparent 0deg 90deg, #2563eb 90deg 160deg, transparent 160deg 270deg, #60a5fa 270deg 340deg, transparent 340deg 360deg);
-  animation: spin 4s linear infinite;
-  filter: blur(6px) brightness(1.6);
+  animation: spin 6s linear infinite;
+  filter: blur(4px) brightness(1.6);
   will-change: transform; 
 }
 
