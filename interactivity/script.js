@@ -1,11 +1,25 @@
 // 👤 Global DOM Interface Selectors
 const lsMenu = document.getElementById('ls');
 const overlayBg = document.getElementById('overlay');
+const lsOpenButton = document.getElementById('ls-open');
+const lsCloseButton = document.getElementById('ls-close');
 
 // ⚙️ Gesture Engine Configuration Bounds
 const MENU_WIDTH = 260; 
 let isDragging = false;
 let startTouchX = 0;
+
+if (lsOpenButton) {
+    lsOpenButton.addEventListener('click', toggleMenu);
+}
+
+if (lsCloseButton) {
+    lsCloseButton.addEventListener('click', toggleMenu);
+}
+
+if (overlayBg) {
+    overlayBg.addEventListener('click', toggleMenu);
+}
 
 // 📂 Standardized Snap Animation States
 function setMenuState(open) {
