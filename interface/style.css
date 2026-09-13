@@ -64,21 +64,19 @@ body {
     cursor: pointer;
 }
 
-/* 🔄 SIDE MENU DESIGN */
+/* SIDE MENU DESIGN */
 #ls {
-    background: var(--glass);
-    backdrop-filter: blur(1.5px);
-    -webkit-backdrop-filter: blur(1.5px);
+    background: white;
     position: fixed;
     top: 0;
-    right: 0; 
+    right: 0;
     width: 260px;
     height: 100%;
     padding: 25px;
     z-index: 200;
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-    transform: translateX(260px); 
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    border-left: 1px solid #e2e8f0;
+    transform: translateX(260px);
     will-change: transform;
 }
 
