@@ -24,8 +24,8 @@ body {
 
 .top-container {
     background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,8 +67,8 @@ body {
 /* 🔄 SIDE MENU DESIGN */
 #ls {
     background: var(--glass);
-    backdrop-filter: blur(3.75px);
-    -webkit-backdrop-filter: blur(3.75px);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
     position: fixed;
     top: 0;
     right: 0; 
@@ -132,8 +132,8 @@ body {
 .overlay.active {
     display: block;
     opacity: 1;
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
 }
 
 .main-content { padding: 35px 20px; }
