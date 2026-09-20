@@ -3,6 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
+<meta name="author" content="Mohammed Hassan Nuri">
+<meta property="og:title" content="About ProStudy">
+<meta property="og:description" content="Learn about ProStudy, an independently maintained school website created by Mohammed Hassan Nuri for classmates.">
+<meta property="og:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
+<meta property="og:url" content="https://hassan4082827.github.io/ProStudy/about.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About ProStudy">
+<meta name="twitter:description" content="Learn about ProStudy, an independently maintained school website created by Mohammed Hassan Nuri for classmates.">
+<meta name="twitter:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
+<link rel="canonical" href="https://hassan4082827.github.io/ProStudy/about.html">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<title>About ProStudy | School Study Website</title>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Person",
+            "@id": "https://hassan4082827.github.io/ProStudy/about.html#creator",
+            "name": "Mohammed Hassan Nuri"
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://hassan4082827.github.io/ProStudy/#website",
+            "url": "https://hassan4082827.github.io/ProStudy/",
+            "name": "ProStudy",
+            "description": "An independently maintained school website for classmates, sharing school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes.",
+            "creator": {
+                "@id": "https://hassan4082827.github.io/ProStudy/about.html#creator"
+            }
+        },
+        {
+            "@type": "AboutPage",
+            "@id": "https://hassan4082827.github.io/ProStudy/about.html#webpage",
+            "url": "https://hassan4082827.github.io/ProStudy/about.html",
+            "name": "About ProStudy",
+            "description": "Information about ProStudy and its independent creator.",
+            "isPartOf": {
+                "@id": "https://hassan4082827.github.io/ProStudy/#website"
+            },
+            "about": {
+                "@id": "https://hassan4082827.github.io/ProStudy/#website"
+            },
+            "creator": {
+                "@id": "https://hassan4082827.github.io/ProStudy/about.html#creator"
+            }
+        }
+    ]
+}
+</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{--bg:#f4f7ff;--card:#fff;--accent:#007bff;--text:#111;--dim:#777;--success:#28a745;--warn:#ff4757;}
@@ -14,6 +67,9 @@ h1{margin:0 0 0 10px;font-size:26px;}
 .subtitle{margin-left:45px;font-size:13px;color:var(--dim);}
 .card{background:var(--card);margin:20px;padding:22px;border-radius:18px;display:flex;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.08);cursor:pointer;}
 .card i{font-size:26px;color:var(--accent);margin-right:18px;}
+.about-copy{background:var(--card);margin:20px;padding:22px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.08);}
+.about-copy h2{margin:0 0 10px;font-size:20px;}
+.about-copy p{margin:0;color:var(--dim);line-height:1.6;}
 #versions{position:fixed;top:100%;left:0;width:100%;height:100%;background:var(--bg);transition:.4s;overflow:auto;}
 #versions.active{top:0;}
 .hero{text-align:center;margin:15px 0 25px;}
@@ -95,6 +151,11 @@ h1{margin:0 0 0 10px;font-size:26px;}
 </div>
 <p class="subtitle">System configuration & build details</p>
 </div>
+
+<section class="about-copy" aria-labelledby="about-description">
+<h2 id="about-description">What is ProStudy?</h2>
+<p>ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.</p>
+</section>
 
 <div class="card" onclick="toggle(true)">
 <i class="fa-solid fa-code-branch"></i>
