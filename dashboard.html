@@ -79,6 +79,36 @@
         .confirm-actions { display: flex; gap: 10px; }
         .cancel-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; background: #e2e8f0; font-weight: 600; cursor: pointer; }
         .danger-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; background: #ef4444; color: white; font-weight: 700; cursor: pointer; }
+
+        body.dark-mode .modal-card,
+        body.dark-mode .confirm-box {
+            background: #111827;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+        }
+        body.dark-mode .modal-card input,
+        body.dark-mode .guest-btn,
+        body.dark-mode .google-btn,
+        body.dark-mode .cancel-btn {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        body.dark-mode .modal-card p,
+        body.dark-mode .confirm-box p,
+        body.dark-mode .guest-btn i,
+        body.dark-mode .or-separator {
+            color: #94a3b8;
+        }
+        body.dark-mode .or-separator::before,
+        body.dark-mode .or-separator::after {
+            background: #334155;
+        }
+        body.dark-mode .guest-btn:hover,
+        body.dark-mode .google-btn:hover {
+            background: #111827;
+        }
     </style>
 </head>
 <body>

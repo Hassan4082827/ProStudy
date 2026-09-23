@@ -58,18 +58,27 @@
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root{--bg:#f4f7ff;--card:#fff;--accent:#007bff;--text:#111;--dim:#777;--success:#28a745;--warn:#ff4757;}
-body{margin:0;font-family:Segoe UI,Roboto;background:var(--bg);}
-.header{padding:35px 20px 25px;background:#eef3ff;border-radius:0 0 30px 30px;}
+:root{--bg:#f4f7ff;--card:#fff;--accent:#007bff;--text:#111;--dim:#777;--success:#28a745;--warn:#ff4757;--header:#eef3ff;--border:#e9edf5;--shadow:rgba(15,23,42,.08);--toggle-bg:#dfe9ff;--toggle-thumb:#fff;--toggle-text:#111;}
+body{margin:0;font-family:Segoe UI,Roboto;background:var(--bg);color:var(--text);transition:background .2s ease,color .2s ease;}
+body.dark{--bg:#0b1220;--card:#111827;--accent:#60a5fa;--text:#e5eefb;--dim:#9aa8bf;--header:#0f172a;--border:#273246;--shadow:rgba(0,0,0,.35);--toggle-bg:#1e293b;--toggle-thumb:#60a5fa;--toggle-text:#e5eefb;}
+.header{padding:35px 20px 25px;background:var(--header);border-radius:0 0 30px 30px;}
 .header-top{display:flex;align-items:center;}
 .back{font-size:22px;padding:10px;cursor:pointer;}
 h1{margin:0 0 0 10px;font-size:26px;}
 .subtitle{margin-left:45px;font-size:13px;color:var(--dim);}
-.card{background:var(--card);margin:20px;padding:22px;border-radius:18px;display:flex;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.08);cursor:pointer;}
+.card{background:var(--card);margin:20px;padding:22px;border-radius:18px;display:flex;align-items:center;box-shadow:0 6px 18px var(--shadow);cursor:pointer;}
 .card i{font-size:26px;color:var(--accent);margin-right:18px;}
-.about-copy{background:var(--card);margin:20px;padding:22px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.08);}
+.about-copy{background:var(--card);margin:20px;padding:22px;border-radius:18px;box-shadow:0 6px 18px var(--shadow);}
 .about-copy h2{margin:0 0 10px;font-size:20px;}
 .about-copy p{margin:0;color:var(--dim);line-height:1.6;}
+.settings-card{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:default;}
+.settings-copy{display:flex;align-items:center;flex:1;min-width:0;}
+.settings-copy div{flex:1;}
+.settings-copy h3{margin:0 0 4px;font-size:18px;}
+.settings-copy p{margin:0;color:var(--dim);font-size:14px;}
+.theme-options{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+.theme-option{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--text);font-size:13px;cursor:pointer;}
+.theme-option input{accent-color:#2563eb;cursor:pointer;}
 #versions{position:fixed;top:100%;left:0;width:100%;height:100%;background:var(--bg);transition:.4s;overflow:auto;}
 #versions.active{top:0;}
 .hero{text-align:center;margin:15px 0 25px;}
@@ -77,7 +86,7 @@ h1{margin:0 0 0 10px;font-size:26px;}
 @keyframes spin{100%{transform:rotate(360deg)}}
 #status{font-weight:700;margin-top:10px;}
 .box{background:var(--card);margin:20px;padding:10px 20px;border-radius:18px;}
-.row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid #eee;}
+.row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);}
 .row:last-child{border:none;}
 .row span{color:var(--dim);}
 .row b{font-family:monospace;}
@@ -157,6 +166,21 @@ h1{margin:0 0 0 10px;font-size:26px;}
 <p>ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.</p>
 </section>
 
+<div class="card settings-card" aria-label="Theme settings">
+    <div class="settings-copy">
+        <i class="fa-solid fa-palette"></i>
+        <div>
+            <h3>Appearance</h3>
+            <p id="theme-status">System theme: light</p>
+        </div>
+    </div>
+    <div class="theme-options" aria-label="Theme selection options">
+        <label class="theme-option"><input type="radio" name="theme-mode" value="system" checked> System</label>
+        <label class="theme-option"><input type="radio" name="theme-mode" value="light"> Light</label>
+        <label class="theme-option"><input type="radio" name="theme-mode" value="dark"> Dark</label>
+    </div>
+</div>
+
 <div class="card" onclick="toggle(true)">
 <i class="fa-solid fa-code-branch"></i>
 <div>
@@ -222,6 +246,58 @@ onclick="triggerGoogleUpgrade()" style="display: none;">
 </div>
 
 <script>
+const THEME_STORAGE_KEY = 'prostudy_theme';
+
+function resolveEffectiveTheme(theme) {
+    if (theme === 'dark') return 'dark';
+    if (theme === 'light') return 'light';
+
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+    const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
+    const effectiveTheme = resolveEffectiveTheme(normalizedTheme);
+    const isDark = effectiveTheme === 'dark';
+
+    document.body.classList.toggle('dark', isDark);
+    document.body.classList.toggle('dark-mode', isDark);
+    localStorage.setItem(THEME_STORAGE_KEY, normalizedTheme);
+
+    const status = document.getElementById('theme-status');
+    if (status) {
+        status.textContent = normalizedTheme === 'system'
+            ? (isDark ? 'System theme: dark' : 'System theme: light')
+            : normalizedTheme === 'dark'
+                ? 'Dark mode enabled'
+                : 'Light mode enabled';
+    }
+
+    const options = document.querySelectorAll('input[name="theme-mode"]');
+    options.forEach((option) => {
+        option.checked = option.value === normalizedTheme;
+    });
+}
+
+function initializeTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const theme = savedTheme || 'system';
+    applyTheme(theme);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateFromSystem = () => {
+        if ((localStorage.getItem(THEME_STORAGE_KEY) || 'system') === 'system') {
+            applyTheme('system');
+        }
+    };
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', updateFromSystem);
+    } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(updateFromSystem);
+    }
+}
+
 function toggle(show) {
     document.getElementById("versions")
         .classList.toggle("active", show);
@@ -232,6 +308,17 @@ function triggerGoogleUpgrade() {
         ProStudyApp.startGoogleSignIn();
     }
 }
+
+const themeOptions = document.querySelectorAll('input[name="theme-mode"]');
+themeOptions.forEach((option) => {
+    option.addEventListener('change', function () {
+        if (this.checked) {
+            applyTheme(this.value);
+        }
+    });
+});
+
+initializeTheme();
 
 function syncWithJava() {
     let appLabel = document.getElementById("appVersion");
