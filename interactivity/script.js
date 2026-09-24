@@ -1,6 +1,60 @@
 // 👤 Global DOM Interface Selectors
 const lsMenu = document.getElementById('ls');
 const overlayBg = document.getElementById('overlay');
+const THEME_STORAGE_KEY = 'prostudy_theme';
+
+function resolveEffectiveTheme(theme) {
+    if (theme === 'dark') return 'dark';
+    if (theme === 'light') return 'light';
+
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme) {
+    const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
+    const effectiveTheme = resolveEffectiveTheme(normalizedTheme);
+    const isDark = effectiveTheme === 'dark';
+
+    document.body.classList.toggle('dark-mode', isDark);
+    document.documentElement.setAttribute('data-theme', effectiveTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, normalizedTheme);
+
+    const themeOptions = document.querySelectorAll('input[name="theme-mode"]');
+    themeOptions.forEach((option) => {
+        const matches = option.value === normalizedTheme;
+        option.checked = matches;
+    });
+
+    const status = document.getElementById('theme-status');
+    if (status) {
+        const label = normalizedTheme === 'system'
+            ? (isDark ? 'System theme: dark' : 'System theme: light')
+            : normalizedTheme === 'dark'
+                ? 'Dark mode enabled'
+                : 'Light mode enabled';
+        status.textContent = label;
+    }
+}
+
+function initializeTheme() {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    const theme = savedTheme || 'system';
+    applyTheme(theme);
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateFromSystem = () => {
+        const currentTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+        if (currentTheme === 'system') {
+            applyTheme('system');
+        }
+    };
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', updateFromSystem);
+    } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(updateFromSystem);
+    }
+}
 
 // ⚙️ Gesture Engine Configuration Bounds
 const MENU_WIDTH = 260; 
@@ -113,3 +167,15 @@ document.body.addEventListener('touchend', (e) => {
         }
     }
 }, { passive: true });
+
+initializeTheme();
+
+const themeOptions = document.querySelectorAll('input[name="theme-mode"]');
+themeOptions.forEach((option) => {
+    option.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            applyTheme(event.target.value);
+        }
+    });
+});
+
