@@ -2,8 +2,31 @@
 :root {
     --brand-blue: #3b82f6;
     --bg-light: #f0f4ff;
+    --bg-strong: #e9efff;
     --text-main: #1e293b;
+    --text-muted: #64748b;
     --glass: rgba(255, 255, 255, 0.85);
+    --panel: rgba(255, 255, 255, 0.9);
+    --panel-strong: #ffffff;
+    --panel-alt: #ffffff;
+    --border: #e2e8f0;
+    --shadow: rgba(15, 23, 42, 0.08);
+    --header-bg: #eef3ff;
+}
+
+body.dark-mode {
+    --brand-blue: #60a5fa;
+    --bg-light: #020817;
+    --bg-strong: #0f172a;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --glass: rgba(15, 23, 42, 0.8);
+    --panel: rgba(15, 23, 42, 0.88);
+    --panel-strong: #111827;
+    --panel-alt: #0f172a;
+    --border: #334155;
+    --shadow: rgba(2, 6, 23, 0.55);
+    --header-bg: #0b1120;
 }
 
 * { 
@@ -21,10 +44,15 @@ body {
     background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body.dark-mode {
+    background-image: radial-gradient(#1e293b 0.5px, transparent 0.5px);
 }
 
 .top-container {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--panel);
     backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(1.5px);
     display: flex;
@@ -32,7 +60,7 @@ body {
     align-items: center;
     height: 70px;
     padding: 0 20px;
-    box-shadow: 0 1px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 15px var(--shadow);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -69,7 +97,7 @@ body {
 
 /* SIDE MENU DESIGN */
 #ls {
-    background: white;
+    background: var(--panel-strong);
     position: fixed;
     top: 0;
     right: 0;
@@ -78,7 +106,7 @@ body {
     padding: 25px;
     z-index: 200;
     box-shadow: -10px 0 30px rgba(0,0,0,0.15);
-    border-left: 1px solid #e2e8f0;
+    border-left: 1px solid var(--border);
     transform: translateX(260px);
     will-change: transform;
 }
@@ -98,7 +126,7 @@ body {
 
 #ls a {
     text-decoration: none;
-    color: #475569;
+    color: var(--text-muted);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -152,7 +180,7 @@ body {
 }
 
 .nav-card {
-    background: white;
+    background: var(--panel-alt);
     padding: 24px;
     border-radius: 25px;
     display: flex;
@@ -160,7 +188,7 @@ body {
     text-decoration: none;
     color: inherit;
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    border: 1px solid rgba(255,255,255,0.7);
+    border: 1px solid var(--border);
     transition: transform 0.1s ease;
     position: relative;
 }
@@ -197,7 +225,7 @@ body {
 
 .info p {
     font-size: 0.85rem;
-    color: #64748b; /* Slightly darkened for better contrast on white backgrounds */
+    color: var(--text-muted);
     line-height: 1.4;
 }
 
