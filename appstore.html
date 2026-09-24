@@ -16,6 +16,11 @@
             font-family: "Inter", sans-serif;
         }
 
+        body.dark-mode {
+            background: #020817 !important;
+            color: #e2e8f0;
+        }
+
         .store-shell {
             max-width: 1180px;
             width: min(100%, 1180px);
@@ -29,6 +34,11 @@
             border-radius: 28px;
             padding: 26px 22px;
             margin-bottom: 24px;
+        }
+
+        body.dark-mode .store-hero {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+            border-color: rgba(96, 165, 250, 0.15);
         }
 
         .store-hero .tag {
@@ -50,11 +60,19 @@
             color: #0f172a;
         }
 
+        body.dark-mode .store-hero h1 {
+            color: #e2e8f0;
+        }
+
         .store-hero p {
             margin: 0;
             color: #475569;
             line-height: 1.7;
             max-width: 760px;
+        }
+
+        body.dark-mode .store-hero p {
+            color: #cbd5e1;
         }
 
         .featured-panel {
@@ -180,10 +198,21 @@
             padding: 18px;
         }
 
+        body.dark-mode .side-panel {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
         .side-panel h3 {
             margin: 0 0 12px;
             font-size: 1.1rem;
             color: #0f172a;
+        }
+
+        body.dark-mode .side-panel h3,
+        body.dark-mode .mini-card strong,
+        body.dark-mode .featured-card h2 {
+            color: #e2e8f0;
         }
 
         .mini-card {
@@ -195,6 +224,11 @@
             background: #f8fafc;
             border: 1px solid rgba(148, 163, 184, 0.14);
             margin-bottom: 10px;
+        }
+
+        body.dark-mode .mini-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(148, 163, 184, 0.15);
         }
 
         .mini-icon {
@@ -218,6 +252,12 @@
             display: block;
             font-size: 0.74rem;
             color: #64748b;
+        }
+
+        body.dark-mode .mini-card span,
+        body.dark-mode .featured-card p,
+        body.dark-mode .meta-pill {
+            color: #cbd5e1;
         }
 
         .section-head {

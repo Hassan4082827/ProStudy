@@ -28,6 +28,19 @@
             --button-blue: #2563eb;
             --text-sub: #64748b;
             --footer-bg: #f3f4f6;
+            --page-text: #1e293b;
+            --logo-shadow: rgba(0, 0, 0, 0.06);
+        }
+
+        body.dark-mode {
+            --bg-top: #020817;
+            --bg-bottom: #0f172a;
+            --brand-blue: #60a5fa;
+            --button-blue: #3b82f6;
+            --text-sub: #cbd5e1;
+            --footer-bg: #0b1220;
+            --page-text: #e2e8f0;
+            --logo-shadow: rgba(0, 0, 0, 0.35);
         }
 
         * {
@@ -43,8 +56,9 @@
             display: flex;
             flex-direction: column;
             background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-            color: #1e293b;
+            color: var(--page-text);
             overflow: hidden;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
         .hero {
@@ -63,7 +77,7 @@
             margin-bottom: clamp(0.8rem, 3vh, 1.5rem); 
             border-radius: 50%;
             display: block;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 20px var(--logo-shadow);
         }
 
         h1 {
@@ -110,6 +124,10 @@
             white-space: nowrap;
         }
 
+        body.dark-mode footer {
+            border-top-color: rgba(148, 163, 184, 0.15);
+        }
+
         @media (max-width: 480px) {
             .hero { padding-bottom: 5vh; }
             .btn { width: 70%; min-width: 200px; padding: 12px 0; }
@@ -130,6 +148,43 @@
     <footer>
         &copy; 2024 - 2027 ProStudy. All rights reserved.
     </footer>
+
+    <script>
+        const THEME_STORAGE_KEY = 'prostudy_theme';
+
+        function resolveEffectiveTheme(theme) {
+            if (theme === 'dark') return 'dark';
+            if (theme === 'light') return 'light';
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function applyLandingTheme(theme) {
+            const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
+            const effectiveTheme = resolveEffectiveTheme(normalizedTheme);
+            document.body.classList.toggle('dark-mode', effectiveTheme === 'dark');
+            localStorage.setItem(THEME_STORAGE_KEY, normalizedTheme);
+        }
+
+        function initializeLandingTheme() {
+            const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+            applyLandingTheme(savedTheme);
+
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            const updateIfSystem = () => {
+                if ((localStorage.getItem(THEME_STORAGE_KEY) || 'system') === 'system') {
+                    applyLandingTheme('system');
+                }
+            };
+
+            if (typeof mediaQuery.addEventListener === 'function') {
+                mediaQuery.addEventListener('change', updateIfSystem);
+            } else if (typeof mediaQuery.addListener === 'function') {
+                mediaQuery.addListener(updateIfSystem);
+            }
+        }
+
+        initializeLandingTheme();
+    </script>
 
 </body>
 </html>

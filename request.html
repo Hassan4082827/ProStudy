@@ -36,6 +36,12 @@
             border: 1px solid rgba(255,255,255,0.7);
         }
 
+        body.dark-mode .request-form-container {
+            background: #111827;
+            border-color: #334155;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+        }
+
         .input-wrap { position: relative; margin-bottom: 30px; }
 
         .input-wrap input, 
@@ -50,6 +56,12 @@
             font-family: inherit;
             outline: none;
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode .input-wrap input,
+        body.dark-mode .input-wrap textarea {
+            color: #e2e8f0;
+            border-bottom-color: #475569;
         }
 
         .input-wrap input:focus, 
