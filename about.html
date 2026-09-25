@@ -76,9 +76,14 @@ h1{margin:0 0 0 10px;font-size:26px;}
 .settings-copy div{flex:1;}
 .settings-copy h3{margin:0 0 4px;font-size:18px;}
 .settings-copy p{margin:0;color:var(--dim);font-size:14px;}
-.theme-options{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
-.theme-option{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--text);font-size:13px;cursor:pointer;}
-.theme-option input{accent-color:#2563eb;cursor:pointer;}
+.theme-picker{position:relative;min-width:170px;}
+.theme-select-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.04);}
+.theme-select-trigger i{font-size:12px;color:var(--dim);transition:transform .2s ease;}
+.theme-picker.open .theme-select-trigger i{transform:rotate(180deg);}
+.theme-select-menu{position:absolute;top:calc(100% + 8px);right:0;left:0;list-style:none;margin:0;padding:6px;border:1px solid var(--border);border-radius:12px;background:var(--card);box-shadow:0 10px 24px rgba(15,23,42,.12);display:none;z-index:50;}
+.theme-picker.open .theme-select-menu{display:block;}
+.theme-option-item{display:block;width:100%;text-align:left;border:none;background:transparent;color:var(--text);padding:10px 12px;border-radius:10px;font-size:14px;cursor:pointer;}
+.theme-option-item:hover,.theme-option-item.active{background:rgba(37,99,235,.08);}
 #versions{position:fixed;top:100%;left:0;width:100%;height:100%;background:var(--bg);transition:.4s;overflow:auto;}
 #versions.active{top:0;}
 .hero{text-align:center;margin:15px 0 25px;}
@@ -174,10 +179,16 @@ h1{margin:0 0 0 10px;font-size:26px;}
             <p id="theme-status">System theme: light</p>
         </div>
     </div>
-    <div class="theme-options" aria-label="Theme selection options">
-        <label class="theme-option"><input type="radio" name="theme-mode" value="system" checked> System</label>
-        <label class="theme-option"><input type="radio" name="theme-mode" value="light"> Light</label>
-        <label class="theme-option"><input type="radio" name="theme-mode" value="dark"> Dark</label>
+    <div class="theme-picker" aria-label="Theme selection options">
+        <button type="button" class="theme-select-trigger" id="theme-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span id="theme-select-label">System (Default)</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <ul class="theme-select-menu" id="theme-select-menu" role="listbox" aria-label="Theme mode">
+            <li><button type="button" class="theme-option-item active" data-theme="system">System (Default)</button></li>
+            <li><button type="button" class="theme-option-item" data-theme="light">Light</button></li>
+            <li><button type="button" class="theme-option-item" data-theme="dark">Dark</button></li>
+        </ul>
     </div>
 </div>
 
@@ -255,6 +266,31 @@ function resolveEffectiveTheme(theme) {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function updateThemePicker(theme) {
+    const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
+    const trigger = document.getElementById('theme-select-trigger');
+    const label = document.getElementById('theme-select-label');
+    const items = document.querySelectorAll('.theme-option-item');
+
+    if (label) {
+        label.textContent = normalizedTheme === 'system'
+            ? 'System (Default)'
+            : normalizedTheme === 'dark'
+                ? 'Dark'
+                : 'Light';
+    }
+
+    items.forEach((item) => {
+        const active = item.dataset.theme === normalizedTheme;
+        item.classList.toggle('active', active);
+    });
+
+    if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.closest('.theme-picker')?.classList.remove('open');
+    }
+}
+
 function applyTheme(theme) {
     const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
     const effectiveTheme = resolveEffectiveTheme(normalizedTheme);
@@ -267,16 +303,13 @@ function applyTheme(theme) {
     const status = document.getElementById('theme-status');
     if (status) {
         status.textContent = normalizedTheme === 'system'
-            ? (isDark ? 'System theme: dark' : 'System theme: light')
+            ? (isDark ? 'System (Default): dark' : 'System (Default): light')
             : normalizedTheme === 'dark'
                 ? 'Dark mode enabled'
                 : 'Light mode enabled';
     }
 
-    const options = document.querySelectorAll('input[name="theme-mode"]');
-    options.forEach((option) => {
-        option.checked = option.value === normalizedTheme;
-    });
+    updateThemePicker(normalizedTheme);
 }
 
 function initializeTheme() {
@@ -309,13 +342,31 @@ function triggerGoogleUpgrade() {
     }
 }
 
-const themeOptions = document.querySelectorAll('input[name="theme-mode"]');
-themeOptions.forEach((option) => {
-    option.addEventListener('change', function () {
-        if (this.checked) {
-            applyTheme(this.value);
-        }
+const themeTrigger = document.getElementById('theme-select-trigger');
+const themePicker = document.querySelector('.theme-picker');
+const themeMenuItems = document.querySelectorAll('.theme-option-item');
+
+themeTrigger?.addEventListener('click', () => {
+    const isOpen = themePicker?.classList.contains('open');
+    themePicker?.classList.toggle('open', !isOpen);
+    themeTrigger.setAttribute('aria-expanded', String(!isOpen));
+});
+
+themeMenuItems.forEach((item) => {
+    item.addEventListener('click', () => {
+        const nextTheme = item.dataset.theme;
+        applyTheme(nextTheme);
+        themePicker?.classList.remove('open');
+        themeTrigger?.setAttribute('aria-expanded', 'false');
     });
+});
+
+document.addEventListener('click', (event) => {
+    if (!themePicker) return;
+    if (!themePicker.contains(event.target)) {
+        themePicker.classList.remove('open');
+        themeTrigger?.setAttribute('aria-expanded', 'false');
+    }
 });
 
 initializeTheme();
