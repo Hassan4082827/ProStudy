@@ -28,7 +28,7 @@ function applyTheme(theme) {
     const status = document.getElementById('theme-status');
     if (status) {
         const label = normalizedTheme === 'system'
-            ? (isDark ? 'System theme: dark' : 'System theme: light')
+            ? (isDark ? 'System (Default): dark' : 'System (Default): light')
             : normalizedTheme === 'dark'
                 ? 'Dark mode enabled'
                 : 'Light mode enabled';
