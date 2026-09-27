@@ -307,7 +307,7 @@ async function initializeHomeworkSubjectActions() {
         }
 
         const rawText = await response.text();
-        const trimmedText = rawText.trim();
+        const trimmedText = rawText.replace(/^\uFEFF/, '').trim();
         if (!trimmedText) {
             return;
         }
