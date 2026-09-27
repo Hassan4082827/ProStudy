@@ -298,6 +298,7 @@ function attachHomeworkUnavailableAction(row) {
 
 async function initializeHomeworkSubjectActions() {
     const itemRows = document.querySelectorAll('.item-row');
+    let recordMap = new Map();
 
     try {
         const response = await fetch(getMetadataUrl(), { cache: 'no-store' });
@@ -305,40 +306,51 @@ async function initializeHomeworkSubjectActions() {
             throw new Error(`metadata request failed: ${response.status}`);
         }
 
-        const data = await response.json();
+        const rawText = await response.text();
+        const trimmedText = rawText.trim();
+        if (!trimmedText) {
+            return;
+        }
+
+        let data;
+        try {
+            data = JSON.parse(trimmedText);
+        } catch (parseError) {
+            console.warn('Homework metadata response was not valid JSON:', parseError);
+            return;
+        }
+
         const records = Array.isArray(data.homework)
             ? data.homework
             : Array.isArray(data.assignments)
                 ? data.assignments
                 : [];
 
-        const recordMap = new Map();
         records.forEach((record) => {
+            if (!record || !record.fileUrl) return;
+
             const dateKey = normalizeMetadataKey(record.date);
             const subjectKey = normalizeMetadataKey(record.subject);
             const lookupKey = `${dateKey}|${subjectKey}`;
-
-            if (record.fileUrl) {
-                recordMap.set(lookupKey, record);
-            }
-        });
-
-        itemRows.forEach((row) => {
-            const dateText = row.closest('.date-group')?.querySelector('.date-header')?.textContent || '';
-            const subjectText = row.querySelector('.info h3')?.textContent || '';
-            const lookupKey = `${normalizeMetadataKey(dateText)}|${normalizeMetadataKey(subjectText)}`;
-            const record = recordMap.get(lookupKey);
-
-            if (record && record.fileUrl) {
-                attachHomeworkDownloadAction(row, record.fileUrl, record.fileName || record.name || 'study_material.pdf');
-                return;
-            }
-
-            attachHomeworkUnavailableAction(row);
+            recordMap.set(lookupKey, record);
         });
     } catch (error) {
         console.warn('Homework metadata not loaded:', error);
     }
+
+    itemRows.forEach((row) => {
+        const dateText = row.closest('.date-group')?.querySelector('.date-header')?.textContent || '';
+        const subjectText = row.querySelector('.info h3')?.textContent || '';
+        const lookupKey = `${normalizeMetadataKey(dateText)}|${normalizeMetadataKey(subjectText)}`;
+        const record = recordMap.get(lookupKey);
+
+        if (record && record.fileUrl) {
+            attachHomeworkDownloadAction(row, record.fileUrl, record.fileName || record.name || 'study_material.pdf');
+            return;
+        }
+
+        attachHomeworkUnavailableAction(row);
+    });
 
     document.addEventListener('click', (event) => {
         if (!event.target.closest('.subject-trigger')) {
