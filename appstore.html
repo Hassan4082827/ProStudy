@@ -716,12 +716,12 @@
 
                     <div class="meta-row" id="featuredMeta">
                         <span class="meta-pill"><i class="fa fa-hard-drive"></i> 2.1 MB</span>
-                        <span class="meta-pill"><i class="fa fa-download"></i> 5 downloads</span>
+                        <span class="meta-pill"><i class="fa fa-download"></i> 7 downloads</span>
                         <span class="meta-pill"><i class="fa fa-star"></i> _ rating</span>
                     </div>
                 </div>
 
-                <a href="./assets/ProStudy-3.0.0-Release.apk" download id="featuredActionBtn" class="download-btn">
+                <a href="./assets/ProStudy-3.1.0-Release.apk" download id="featuredActionBtn" class="download-btn">
                     <span class="progress-fill"></span>
                     <span class="download-content">
                         <i class="fa fa-download"></i>
@@ -804,8 +804,8 @@
                 size: '2.1 MB',
                 rating: '_',
                 price: 'Free',
-                downloads: 5,
-                version: '3.0.0',
+                downloads: 7,
+                version: '3.1.0',
                 packageName: 'com.hassan.prostudy',
                 released: '2026-09-20',
                 android: 'Android 6.0 (Marshmallow)+',
@@ -999,7 +999,7 @@
                     featuredActionBtn.style.pointerEvents = 'none';
                     featuredBtnText.textContent = 'Downloading 0%';
                     if (typeof ProStudyApp !== 'undefined' && ProStudyApp.downloadAndInstallUpdate) {
-                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.0.0-Release.apk');
+                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.1.0-Release.apk');
                     }
                 };
                 featuredBtnText.textContent = label;
@@ -1008,8 +1008,8 @@
             }
 
             if (type === 'download') {
-                featuredActionBtn.href = 'assets/ProStudy-3.0.0-Release.apk';
-                featuredActionBtn.download = 'ProStudy-3.0.0-Release.apk';
+                featuredActionBtn.href = 'assets/ProStudy-3.1.0-Release.apk';
+                featuredActionBtn.download = 'ProStudy-3.1.0-Release.apk';
                 featuredActionBtn.style.background = 'linear-gradient(135deg, #60a5fa, #2563eb)';
                 featuredActionBtn.style.cursor = 'pointer';
                 featuredActionBtn.style.pointerEvents = 'auto';
@@ -1022,7 +1022,7 @@
         function checkNativeAppStoreState() {
             if (typeof ProStudyApp !== 'undefined') {
                 const installedCode = parseInt(ProStudyApp.getVersionCode() || '0', 10);
-                const latestVersionCode = 300;
+                const latestVersionCode = 310;
 
                 if (installedCode >= latestVersionCode) {
                     setFeaturedButtonState('native-updated', 'Already in App', 100);
