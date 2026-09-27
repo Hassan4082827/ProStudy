@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school.">
+    <meta name="description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta name="keywords" content="ProStudy, Mohammed Hassan Nuri">
     <meta name="author" content="Mohammed Hassan Nuri">
     <meta property="og:title" content="ProStudy | Dashboard">
-    <meta property="og:description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school.">
+    <meta property="og:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta property="og:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
     <meta property="og:url" content="https://hassan4082827.github.io/ProStudy/dashboard.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ProStudy | Dashboard">
-    <meta name="twitter:description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school.">
+    <meta name="twitter:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta name="twitter:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
     <title>ProStudy | Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -79,6 +79,36 @@
         .confirm-actions { display: flex; gap: 10px; }
         .cancel-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; background: #e2e8f0; font-weight: 600; cursor: pointer; }
         .danger-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; background: #ef4444; color: white; font-weight: 700; cursor: pointer; }
+
+        body.dark-mode .modal-card,
+        body.dark-mode .confirm-box {
+            background: #111827;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+        }
+        body.dark-mode .modal-card input,
+        body.dark-mode .guest-btn,
+        body.dark-mode .google-btn,
+        body.dark-mode .cancel-btn {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        body.dark-mode .modal-card p,
+        body.dark-mode .confirm-box p,
+        body.dark-mode .guest-btn i,
+        body.dark-mode .or-separator {
+            color: #94a3b8;
+        }
+        body.dark-mode .or-separator::before,
+        body.dark-mode .or-separator::after {
+            background: #334155;
+        }
+        body.dark-mode .guest-btn:hover,
+        body.dark-mode .google-btn:hover {
+            background: #111827;
+        }
     </style>
 </head>
 <body>
@@ -127,6 +157,7 @@
         <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
         <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
         <li><a href="quickquiz.html"><i class="fa fa-bolt"></i> QuickQuiz</a></li>
+        <li><a href="appstore.html"><i class="fa fa-store"></i> App Store</a></li>
         <li><a href="about.html"><i class="fa fa-gear"></i> About</a></li>
       </ul>
       <button class="delete-btn" onclick="openConfirm()">Reset Data</button>
@@ -154,6 +185,11 @@
             <div class="border-wrapper"><a href="quickquiz.html" class="nav-card">
                 <div class="icon-sq bg-yellow"><i class="fa fa-bolt"></i></div>
                 <div class="info"><h3>QuickQuiz</h3><p>Take Quiz</p></div>
+            </a></div>
+
+            <div class="border-wrapper"><a href="appstore.html" class="nav-card">
+                <div class="icon-sq bg-black"><i class="fa fa-store"></i></div>
+                <div class="info"><h3>App Store</h3><p>Explore tools</p></div>
             </a></div>
 
             <div class="border-wrapper"><a href="about.html" class="nav-card">

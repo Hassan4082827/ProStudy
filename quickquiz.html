@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProStudy | QuickQuiz</title>
-    <meta name="description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school."
+    <meta name="description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta name="keywords" content="ProStudy, Mohammed Hassan Nuri">
     <meta name="author" content="Mohammed Hassan Nuri">
     <meta property="og:title" content="ProStudy | QuickQuiz">
-    <meta property="og:description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school.">
+    <meta property="og:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta property="og:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
     <meta property="og:url" content="https://hassan4082827.github.io/ProStudy/quickquiz.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ProStudy | QuickQuiz">
-    <meta name="twitter:description" content="ProStudy is a Private Project made for sharing assignments, announcements, notes, files, schedules, Exam Questions and Answers, not a public utility to use, for my school.">
+    <meta name="twitter:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
     <meta name="twitter:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
-    <link rel="canonical" href="https://hassan4082827.github.io/ProStudy/quickquiz.html"
+    <link rel="canonical" href="https://hassan4082827.github.io/ProStudy/quickquiz.html" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -66,6 +66,12 @@
             margin-bottom: 20px;
         }
 
+        body.dark-mode .qq-card {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(148, 163, 184, 0.18);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+        }
+
         .qq-input {
             width: 100%;
             padding: 15px;
@@ -79,6 +85,17 @@
         }
         .qq-input:focus { border-color: var(--brand-blue); background: #f8fafc; }
 
+        body.dark-mode .qq-input {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .qq-input:focus {
+            background: #111827;
+            border-color: var(--brand-blue);
+        }
+
         .qq-badge {
             background: #eff6ff;
             color: var(--brand-blue);
@@ -89,28 +106,38 @@
             margin-bottom: 15px;
             display: inline-block;
         }
+
+        body.dark-mode .qq-badge {
+            background: rgba(96, 165, 250, 0.12);
+            color: #bfdbfe;
+        }
+
+        body.dark-mode #history-view h3 {
+            color: #cbd5e1;
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay"></div>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <header class="top-container">
       <div class="logo-area">
-          <img src="assets/QuickQuiz.png" class="logo-img">
+          <img src="assets/QuickQuiz.png" class="logo-img" alt="QuickQuiz logo">
           <h2>QuickQuiz</h2>
       </div>
-      <button id="ls-open"><i class="fa fa-bars-staggered"></i></button>
+      <button id="ls-open" onclick="toggleMenu()" aria-label="Open menu"><i class="fa fa-bars-staggered"></i></button>
     </header>
 
     <nav id="ls">
-      <button id="ls-close"><i class="fa fa-xmark"></i></button>
+      <button id="ls-close" onclick="toggleMenu()" aria-label="Close menu"><i class="fa fa-xmark"></i></button>
       <ul>
         <li><a href="dashboard.html"><i class="fa fa-house"></i> Home</a></li>
         <li><a href="news.html"><i class="fa fa-newspaper"></i> News Feed</a></li>
         <li><a href="homework.html"><i class="fa fa-book-bookmark"></i> Homework</a></li>
         <li><a href="request.html"><i class="fa fa-paper-plane"></i> Request</a></li>
         <li><a href="quickquiz.html" class="active"><i class="fa fa-bolt"></i> QuickQuiz</a></li>
+        <li><a href="appstore.html"><i class="fa fa-store"></i> App Store</a></li>
         <li><a href="about.html"><i class="fa fa-gear"></i> About</a></li>
       </ul>
     </nav>
@@ -181,29 +208,52 @@
         }
 
         function renderQuiz(data) {
-            questions = data;
+            const safeData = Array.isArray(data) ? data : [];
+            questions = safeData;
             document.getElementById('setup-view').classList.add('hidden');
             document.getElementById('history-view').classList.add('hidden');
             document.getElementById('play-view').classList.remove('hidden');
             const list = document.getElementById('questions-list');
             list.innerHTML = "";
             questions.forEach((item, i) => {
-                list.innerHTML += `
-                <div class="qq-card">
-                    <p style="font-weight:800; margin-bottom:10px; font-size:1.1rem;">Q${i+1}: ${item.q}</p>
-                    <input type="text" class="ans-field" data-idx="${i}" style="width:100%; padding:14px; border-radius:15px; border:2px solid #f1f5f9; outline:none;" placeholder="Your Answer...">
-                </div>`;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'qq-card';
+
+                const prompt = document.createElement('p');
+                prompt.style.fontWeight = '800';
+                prompt.style.marginBottom = '10px';
+                prompt.style.fontSize = '1.1rem';
+                prompt.textContent = `Q${i + 1}: ${item.q}`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'ans-field';
+                input.dataset.idx = String(i);
+                input.style.width = '100%';
+                input.style.padding = '14px';
+                input.style.borderRadius = '15px';
+                input.style.border = '2px solid #f1f5f9';
+                input.style.outline = 'none';
+                input.placeholder = 'Your Answer...';
+
+                wrapper.appendChild(prompt);
+                wrapper.appendChild(input);
+                list.appendChild(wrapper);
             });
         }
 
         function checkResults() {
+            if (!Array.isArray(questions) || questions.length === 0) return;
+
             let score = 0;
             document.querySelectorAll('.ans-field').forEach(inp => {
-                if(inp.value.toLowerCase().trim() === questions[inp.dataset.idx].a) score++;
+                const idx = Number(inp.dataset.idx);
+                if (!questions[idx]) return;
+                if (inp.value.toLowerCase().trim() === questions[idx].a) score++;
             });
             document.getElementById('play-view').classList.add('hidden');
             document.getElementById('result-view').classList.remove('hidden');
-            document.getElementById('res-score').innerHTML = `Score: ${score} / ${questions.length}`;
+            document.getElementById('res-score').textContent = `Score: ${score} / ${questions.length}`;
         }
 
         // FIX: Updated to fetch data from ProStudyApp automatically
@@ -211,26 +261,48 @@
             if(typeof ProStudyApp !== "undefined") {
                 let json = ProStudyApp.loadAllQuizzes();
                 if(json && json !== "[]") {
-                    const container = document.getElementById('history-list');
-                    container.innerHTML = "";
-                    const data = JSON.parse(json);
-                    data.forEach((item, i) => {
-                        // Data extraction logic (handling string or object)
-                        let qData = (typeof item.data === 'string') ? JSON.parse(item.data) : item.data;
-                        
-                        const div = document.createElement('div');
-                        div.className = "border-wrapper"; 
-                        div.innerHTML = `
-                        <div class="nav-card">
-                            <div class="icon-sq bg-blue"><i class="fa fa-bolt"></i></div>
-                            <div class="info"><h3>Quiz Set #${data.length - i}</h3><p>${qData.length} Questions</p></div>
-                        </div>`;
-                        div.onclick = () => renderQuiz(qData);
-                        container.appendChild(div);
-                    });
+                    try {
+                        const container = document.getElementById('history-list');
+                        container.innerHTML = "";
+                        const data = JSON.parse(json);
+                        if (!Array.isArray(data)) return;
+
+                        data.forEach((item, i) => {
+                            let qData = (typeof item.data === 'string') ? JSON.parse(item.data) : item.data;
+                            if (!Array.isArray(qData)) return;
+
+                            const div = document.createElement('div');
+                            div.className = "border-wrapper";
+
+                            const card = document.createElement('div');
+                            card.className = "nav-card";
+
+                            const iconWrap = document.createElement('div');
+                            iconWrap.className = "icon-sq bg-blue";
+                            const icon = document.createElement('i');
+                            icon.className = "fa fa-bolt";
+                            iconWrap.appendChild(icon);
+
+                            const info = document.createElement('div');
+                            info.className = "info";
+                            const title = document.createElement('h3');
+                            title.textContent = `Quiz Set #${data.length - i}`;
+                            const subtitle = document.createElement('p');
+                            subtitle.textContent = `${qData.length} Questions`;
+                            info.appendChild(title);
+                            info.appendChild(subtitle);
+
+                            card.appendChild(iconWrap);
+                            card.appendChild(info);
+                            div.appendChild(card);
+                            div.onclick = () => renderQuiz(qData);
+                            container.appendChild(div);
+                        });
+                    } catch (error) {
+                        console.warn('Unable to parse saved quizzes:', error);
+                    }
                 }
             } else {
-                // Retry if the app bridge takes a moment to load
                 setTimeout(loadHistory, 500);
             }
         }
