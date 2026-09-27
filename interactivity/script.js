@@ -181,7 +181,7 @@ function normalizeMetadataKey(value) {
 }
 
 function getMetadataUrl() {
-    return 'https://cdn.jsdelivr.net/gh/hassan4082827/ProStudyStorage@main/metadata.json?v=' + Date.now();
+    return 'https://raw.githubusercontent.com/hassan4082827/ProStudyStorage/main/metadata.json?v=' + Date.now();
 }
 
 function ensureToastContainer() {
