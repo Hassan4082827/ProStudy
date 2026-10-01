@@ -721,7 +721,7 @@
                     </div>
                 </div>
 
-                <a href="./assets/ProStudy-3.1.0-Release.apk" download id="featuredActionBtn" class="download-btn">
+                <a href="./assets/ProStudy-3.2.0-Release.apk" download id="featuredActionBtn" class="download-btn">
                     <span class="progress-fill"></span>
                     <span class="download-content">
                         <i class="fa fa-download"></i>
@@ -805,7 +805,7 @@
                 rating: '_',
                 price: 'Free',
                 downloads: 7,
-                version: '3.1.0',
+                version: '3.2.0',
                 packageName: 'com.hassan.prostudy',
                 released: '2026-09-20',
                 android: 'Android 6.0 (Marshmallow)+',
@@ -999,7 +999,7 @@
                     featuredActionBtn.style.pointerEvents = 'none';
                     featuredBtnText.textContent = 'Downloading 0%';
                     if (typeof ProStudyApp !== 'undefined' && ProStudyApp.downloadAndInstallUpdate) {
-                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.1.0-Release.apk');
+                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.2.0-Release.apk');
                     }
                 };
                 featuredBtnText.textContent = label;
@@ -1022,7 +1022,7 @@
         function checkNativeAppStoreState() {
             if (typeof ProStudyApp !== 'undefined') {
                 const installedCode = parseInt(ProStudyApp.getVersionCode() || '0', 10);
-                const latestVersionCode = 310;
+                const latestVersionCode = 320;
 
                 if (installedCode >= latestVersionCode) {
                     setFeaturedButtonState('native-updated', 'Already in App', 100);
