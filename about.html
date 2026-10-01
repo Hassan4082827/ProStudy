@@ -344,7 +344,7 @@ h1{margin:0 0 0 10px;font-size:26px;}
                 <span>Connect Google</span>
             </button>
             <button type="button" class="account-action" onclick="alert('Profile editing will be available soon.')">Edit profile</button>
-            <button type="button" class="account-action danger" onclick="alert('You are using a local guest account.')">Sign out</button>
+            <button type="button" class="account-action danger" onclick="handleSignOut()">Sign out</button>
         </div>
     </div>
 </section>
@@ -482,17 +482,17 @@ onclick="triggerGoogleUpgrade()" style="display: none;">
 
 <div class="row">
 <span>Latest App Version</span>
-<b class="red">3.2.0</b>
+<b class="red">3.2.1</b>
 </div>
 
 <div class="row">
 <span>Combined Version</span>
-<b id="combinedVersion">3.2.0</b>
+<b id="combinedVersion">3.2.1</b>
 </div>
 
 <div class="row">
 <span>Content Version</span>
-<b id="contentVersion">2.3.0</b>
+<b id="contentVersion">2.3.1</b>
 </div>
 
 </div>
@@ -876,7 +876,7 @@ function updateStorageInfo() {
         const quizCount = Number(info.quizCount);
         const cacheBytes = Number(info.cacheBytes);
 
-        if (!totalBytes || !Number.isFinite(totalBytes) || !Number.isFinite(freeBytes) || !Number.isFinite(appBytes)
+        if (!Number.isFinite(totalBytes) || !Number.isFinite(freeBytes) || !Number.isFinite(appBytes)
             || !Number.isFinite(downloadsBytes) || !Number.isFinite(downloadCount)
             || !Number.isFinite(quizzesBytes) || !Number.isFinite(quizCount) || !Number.isFinite(cacheBytes)) return;
 
@@ -908,6 +908,22 @@ function triggerGoogleUpgrade() {
     if (typeof ProStudyApp !== 'undefined') {
         ProStudyApp.startGoogleSignIn();
     }
+}
+
+function handleSignOut() {
+    if (!confirm('Are you sure you want to sign out?')) return;
+
+    localStorage.removeItem('prostudy_user');
+    localStorage.removeItem('prostudy_auth_type');
+    localStorage.removeItem('prostudy_synced');
+
+    if (typeof ProStudyApp !== 'undefined' && typeof ProStudyApp.signOut === 'function') {
+        ProStudyApp.signOut();
+    }
+
+    renderAccountCard();
+    alert('Signed out successfully.');
+    location.reload();
 }
 
 function renderAccountCard() {
@@ -977,7 +993,7 @@ function syncWithJava() {
     let status = document.getElementById("status");
     let bindCard = document.getElementById("googleBindCard");
 
-    let latestCode = 320;
+    let latestCode = 321;
 
     if (typeof ProStudyApp !== 'undefined') {
 
@@ -986,6 +1002,27 @@ function syncWithJava() {
         if (ProStudyApp.getVersionName) {
             appLabel.innerText =
                 ProStudyApp.getVersionName();
+        }
+
+        if (typeof ProStudyApp.getPendingNotifications === 'function') {
+            try {
+                const pendingRaw = ProStudyApp.getPendingNotifications();
+                const pendingList = JSON.parse(pendingRaw || '[]');
+                if (Array.isArray(pendingList) && pendingList.length > 0) {
+                    pendingList.forEach((item) => {
+                        receiveProStudyNotification({
+                            id: item.timestamp || Date.now(),
+                            title: item.title,
+                            body: item.body,
+                            type: item.type || 'announcement',
+                            timestamp: item.timestamp || Date.now(),
+                            read: false
+                        });
+                    });
+                }
+            } catch (error) {
+                console.warn('Failed syncing notifications', error);
+            }
         }
 
         if (ProStudyApp.getVersionCode) {

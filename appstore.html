@@ -721,7 +721,7 @@
                     </div>
                 </div>
 
-                <a href="./assets/ProStudy-3.2.0-Release.apk" download id="featuredActionBtn" class="download-btn">
+                <a href="./assets/ProStudy-3.2.1-Release.apk" download id="featuredActionBtn" class="download-btn">
                     <span class="progress-fill"></span>
                     <span class="download-content">
                         <i class="fa fa-download"></i>
@@ -772,13 +772,13 @@
                 <aside class="meta-box">
                     <h4>APK details</h4>
                     <div class="meta-list">
-                        <div class="meta-item"><span>Version</span><span id="versionValue">1.0.0</span></div>
+                        <div class="meta-item"><span>Version</span><span id="versionValue">3.2.1</span></div>
                         <div class="meta-item"><span>Package</span><span id="packageValue">com.prostudy.app</span></div>
-                        <div class="meta-item"><span>Released</span><span id="releasedValue">2026-09-20</span></div>
-                        <div class="meta-item"><span>Size</span><span id="sizeValue">12 MB</span></div>
-                        <div class="meta-item"><span>Downloads</span><span id="downloadsValue">1.28K</span></div>
-                        <div class="meta-item"><span>Min Android</span><span id="androidValue">8.0+</span></div>
-                        <div class="meta-item"><span>SHA256</span><span id="shaValue">Not generated yet</span></div>
+                        <div class="meta-item"><span>Released</span><span id="releasedValue">2026-10-01</span></div>
+                        <div class="meta-item"><span>Size</span><span id="sizeValue">2.1 MB</span></div>
+                        <div class="meta-item"><span>Downloads</span><span id="downloadsValue">7</span></div>
+                        <div class="meta-item"><span>Min Android</span><span id="androidValue">Android 6.0 (Marshmallow)+</span></div>
+                        <div class="meta-item"><span>SHA256</span><span id="shaValue">0A:C4:D2:D8:49:34:6F:AE:EA:3B:01:BE:A6:7D:15:05:01:43:67:03:1C:21:D3:5D:C9:48:A4:EF:40:9E:A8:8E</span></div>
                     </div>
                 </aside>
             </div>
@@ -805,9 +805,9 @@
                 rating: '_',
                 price: 'Free',
                 downloads: 7,
-                version: '3.2.0',
+                version: '3.2.1',
                 packageName: 'com.hassan.prostudy',
-                released: '2026-09-20',
+                released: '2026-10-01',
                 android: 'Android 6.0 (Marshmallow)+',
                 sha256: '0A:C4:D2:D8:49:34:6F:AE:EA:3B:01:BE:A6:7D:15:05:01:43:67:03:1C:21:D3:5D:C9:48:A4:EF:40:9E:A8:8E',
                 color: 'linear-gradient(135deg, #3b82f6, #2563eb)',
@@ -999,7 +999,7 @@
                     featuredActionBtn.style.pointerEvents = 'none';
                     featuredBtnText.textContent = 'Downloading 0%';
                     if (typeof ProStudyApp !== 'undefined' && ProStudyApp.downloadAndInstallUpdate) {
-                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.2.0-Release.apk');
+                        ProStudyApp.downloadAndInstallUpdate('https://hassan4082827.github.io/ProStudy/assets/ProStudy-3.2.1-Release.apk');
                     }
                 };
                 featuredBtnText.textContent = label;
@@ -1022,7 +1022,7 @@
         function checkNativeAppStoreState() {
             if (typeof ProStudyApp !== 'undefined') {
                 const installedCode = parseInt(ProStudyApp.getVersionCode() || '0', 10);
-                const latestVersionCode = 320;
+                const latestVersionCode = 321;
 
                 if (installedCode >= latestVersionCode) {
                     setFeaturedButtonState('native-updated', 'Already in App', 100);
