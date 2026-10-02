@@ -715,13 +715,13 @@
                     <p id="featuredDesc">A compact student app for homework, updates, request tools, and revision workflows.</p>
 
                     <div class="meta-row" id="featuredMeta">
-                        <span class="meta-pill"><i class="fa fa-hard-drive"></i> 2.1 MB</span>
+                        <span class="meta-pill"><i class="fa fa-hard-drive"></i> 2.0 MB</span>
                         <span class="meta-pill"><i class="fa fa-download"></i> 7 downloads</span>
                         <span class="meta-pill"><i class="fa fa-star"></i> _ rating</span>
                     </div>
                 </div>
 
-                <a href="./assets/ProStudy-3.2.1-Release.apk" download id="featuredActionBtn" class="download-btn">
+                <a href="./assets/ProStudy-3.2.2-Release.apk" download id="featuredActionBtn" class="download-btn">
                     <span class="progress-fill"></span>
                     <span class="download-content">
                         <i class="fa fa-download"></i>
@@ -772,13 +772,13 @@
                 <aside class="meta-box">
                     <h4>APK details</h4>
                     <div class="meta-list">
-                        <div class="meta-item"><span>Version</span><span id="versionValue">3.2.1</span></div>
+                        <div class="meta-item"><span>Version</span><span id="versionValue">3.2.2</span></div>
                         <div class="meta-item"><span>Package</span><span id="packageValue">com.prostudy.app</span></div>
-                        <div class="meta-item"><span>Released</span><span id="releasedValue">2026-10-01</span></div>
-                        <div class="meta-item"><span>Size</span><span id="sizeValue">2.1 MB</span></div>
+                        <div class="meta-item"><span>Released</span><span id="releasedValue">2026-10-02</span></div>
+                        <div class="meta-item"><span>Size</span><span id="sizeValue">2.0 MB</span></div>
                         <div class="meta-item"><span>Downloads</span><span id="downloadsValue">7</span></div>
                         <div class="meta-item"><span>Min Android</span><span id="androidValue">Android 6.0 (Marshmallow)+</span></div>
-                        <div class="meta-item"><span>SHA256</span><span id="shaValue">0A:C4:D2:D8:49:34:6F:AE:EA:3B:01:BE:A6:7D:15:05:01:43:67:03:1C:21:D3:5D:C9:48:A4:EF:40:9E:A8:8E</span></div>
+                        <div class="meta-item"><span>SHA256</span><span id="shaValue">77:A0:64:FC:7D:7A:55:F3:9F:EC:BB:EC:22:BB:2D:C2:D7:F0:71:A7:25:6F:FB:5A:20:DF:12:17:BB:94:EB:45</span></div>
                     </div>
                 </aside>
             </div>
@@ -801,15 +801,15 @@
             {
                 name: 'ProStudyApp',
                 description: 'A compact student app for homework, updates, request tools, and revision workflows.',
-                size: '2.1 MB',
+                size: '2.0 MB',
                 rating: '_',
                 price: 'Free',
                 downloads: 7,
-                version: '3.2.1',
+                version: '3.2.2',
                 packageName: 'com.hassan.prostudy',
-                released: '2026-10-01',
+                released: '2026-10-02',
                 android: 'Android 6.0 (Marshmallow)+',
-                sha256: '0A:C4:D2:D8:49:34:6F:AE:EA:3B:01:BE:A6:7D:15:05:01:43:67:03:1C:21:D3:5D:C9:48:A4:EF:40:9E:A8:8E',
+                sha256: '77:A0:64:FC:7D:7A:55:F3:9F:EC:BB:EC:22:BB:2D:C2:D7:F0:71:A7:25:6F:FB:5A:20:DF:12:17:BB:94:EB:45',
                 color: 'linear-gradient(135deg, #3b82f6, #2563eb)',
                 logo: 'assets/main.png',
                 screenshots: ['assets/main.png', 'assets/main.png', 'assets/main.png', 'assets/main.png', 'assets/main.png']
@@ -1025,7 +1025,7 @@
         function checkNativeAppStoreState() {
             if (typeof ProStudyApp !== 'undefined') {
                 const installedCode = parseInt(ProStudyApp.getVersionCode() || '0', 10);
-                const latestVersionCode = 321;
+                const latestVersionCode = 322;
 
                 if (installedCode >= latestVersionCode) {
                     setFeaturedButtonState('native-updated', 'Already in App', 100);
