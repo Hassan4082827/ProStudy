@@ -215,20 +215,29 @@ const welcomeText = document.getElementById('welcome-text');
 const nameModal = document.getElementById('name-modal');
 
 // 🚀 On Load
-window.onload = () => {
-    const savedName = localStorage.getItem('prostudy_user');
+window.addEventListener('load', () => {
+    const savedName = (localStorage.getItem('prostudy_user') || '').trim();
 
-    if (!savedName) {
-        if (typeof ProStudyApp !== 'undefined' && ProStudyApp.checkUserRecovery) {
-            ProStudyApp.checkUserRecovery();
-        } else {
-            nameModal.style.display = 'flex';
-        }
-    } else {
+    if (savedName && savedName.toLowerCase() !== 'user') {
         welcomeText.textContent = `Hey, ${savedName} 👋`;
         syncIdentity(savedName);
+        return;
     }
-};
+
+    if (savedName.toLowerCase() === 'user') {
+        localStorage.removeItem('prostudy_user');
+    }
+
+    recoverAccount(null);
+
+    if (typeof ProStudyApp !== 'undefined' && typeof ProStudyApp.checkUserRecovery === 'function') {
+        try {
+            ProStudyApp.checkUserRecovery();
+        } catch (error) {
+            console.warn('Account recovery could not start', error);
+        }
+    }
+});
 
 // 💾 Save Name
 function saveName() {
@@ -251,42 +260,55 @@ function recoverAccount(name) {
     const separator = document.querySelector('.or-separator');
     const modalTitle = document.querySelector('.modal-card h3');
     const modalDesc = document.querySelector('.modal-card p');
+    const recoveredName = typeof name === 'string' ? name.trim() : '';
 
-    if (name) {
-        // Purana user mil gaya
-        localStorage.setItem('prostudy_user', name);
+    if (recoveredName && recoveredName.toLowerCase() !== 'user' && recoveredName.toLowerCase() !== 'null') {
+        localStorage.setItem('prostudy_user', recoveredName);
         localStorage.setItem('prostudy_auth_type', 'google');
         localStorage.setItem('prostudy_synced', 'true');
-        welcomeText.textContent = `Hey, ${name} 👋`;
+        welcomeText.textContent = `Hey, ${recoveredName} 👋`;
         nameModal.style.display = 'none';
     } else {
-        // Naya user ya Identity unknown
         nameModal.style.display = 'flex';
-        
-        // Agar user ne abhi Google Sign-in dabaya hai (isAnonymous check via bridge)
-        // toh hum Google button hide karenge. 
-        // Par pehli baar startup par dono dikhenge.
+
         const authType = localStorage.getItem('prostudy_auth_type');
         if (authType === 'google_pending') {
-            if(gBtn) gBtn.style.display = 'none';
-            if(separator) separator.style.display = 'none';
-            modalTitle.innerText = 'Choose Username';
-            modalDesc.innerText = 'Set a nickname for your new account';
+            if (gBtn) gBtn.style.display = 'none';
+            if (separator) separator.style.display = 'none';
+            if (modalTitle) modalTitle.innerText = 'Choose Username';
+            if (modalDesc) modalDesc.innerText = 'Set a nickname for your new account';
         } else {
-            // "Choose Route" mode (Dono buttons visible)
-            if(gBtn) gBtn.style.display = 'flex';
-            if(separator) separator.style.display = 'flex';
-            modalTitle.innerText = 'Welcome';
-            modalDesc.innerText = 'Choose your entry route';
+            if (gBtn) gBtn.style.display = 'flex';
+            if (separator) separator.style.display = 'flex';
+            if (modalTitle) modalTitle.innerText = 'Welcome';
+            if (modalDesc) modalDesc.innerText = 'Choose your entry route';
         }
     }
 }
 
 // 🔐 Update triggerGoogleSignIn
 function triggerGoogleSignIn() {
-    if (typeof ProStudyApp !== 'undefined') {
-        localStorage.setItem('prostudy_auth_type', 'google_pending'); // Mark as pending to change modal UI
+    if (typeof ProStudyApp === 'undefined' || typeof ProStudyApp.startGoogleSignIn !== 'function') {
+        const modalDesc = document.querySelector('.modal-card p');
+        if (modalDesc) modalDesc.textContent = 'Google sign-in requires the ProStudy Android app. You can continue as a guest.';
+        return;
+    }
+
+    const previousAuthType = localStorage.getItem('prostudy_auth_type');
+    localStorage.setItem('prostudy_auth_type', 'google_pending');
+
+    try {
         ProStudyApp.startGoogleSignIn();
+    } catch (error) {
+        if (previousAuthType) {
+            localStorage.setItem('prostudy_auth_type', previousAuthType);
+        } else {
+            localStorage.removeItem('prostudy_auth_type');
+        }
+        recoverAccount(null);
+        const modalDesc = document.querySelector('.modal-card p');
+        if (modalDesc) modalDesc.textContent = 'Google sign-in could not start. Please try again or continue as a guest.';
+        console.warn('Google sign-in could not start', error);
     }
 }
 

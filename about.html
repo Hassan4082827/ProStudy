@@ -583,8 +583,12 @@ function toggleFiles(show) {
         .classList.toggle('active', show);
 
     if (show) {
-        updateStorageInfo();
-        loadFolder('');
+        currentFolderPath = '';
+        updateFileBreadcrumb();
+        waitForFileBridge();
+    } else if (fileBridgeRetryTimer) {
+        clearTimeout(fileBridgeRetryTimer);
+        fileBridgeRetryTimer = null;
     }
 }
 
@@ -723,6 +727,21 @@ document.getElementById('notification-mark-read').addEventListener('click', () =
 renderNotifications();
 
 let currentFolderPath = '';
+let fileBridgeRetryTimer = null;
+
+function waitForFileBridge(attempt = 0) {
+    if (!document.getElementById('file-management-view').classList.contains('active')) return;
+
+    if (fileBridgeAvailable('listFiles') || attempt >= 15) {
+        fileBridgeRetryTimer = null;
+        updateStorageInfo();
+        loadFolder(currentFolderPath);
+        return;
+    }
+
+    renderFileManagerMessage('Connecting to Android storage...');
+    fileBridgeRetryTimer = setTimeout(() => waitForFileBridge(attempt + 1), 100);
+}
 
 function fileBridgeAvailable(method) {
     return typeof ProStudyApp !== 'undefined' && typeof ProStudyApp[method] === 'function';
