@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
+    <meta name="keywords" content="ProStudy, Mohammed Hassan Nuri">
+    <meta name="author" content="Mohammed Hassan Nuri">
+    <meta property="og:title" content="ProStudy - Resource Provider">
+    <meta property="og:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
+    <meta property="og:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
+    <meta property="og:url" content="https://hassan4082827.github.io/ProStudy/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ProStudy - Resource Provider">
+    <meta name="twitter:description" content="ProStudy is an independently maintained school website created by Mohammed Hassan Nuri for classmates. It shares school announcements, assignments, notes, files, schedules, exam questions and answers, and revision quizzes based on information from the school community.">
+    <meta name="twitter:image" content="https://hassan4082827.github.io/ProStudy/assets/main.png">
+    <title>ProStudy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="canonical" href="https://hassan4082827.github.io/ProStudy/">
+    <style>
+        :root {
+            --bg-top: #eef4ff;
+            --bg-bottom: #d1e3ff;
+            --brand-blue: #3b66f5;
+            --button-blue: #2563eb;
+            --text-sub: #64748b;
+            --footer-bg: #f3f4f6;
+            --page-text: #1e293b;
+            --logo-shadow: rgba(0, 0, 0, 0.06);
+        }
+
+        body.dark-mode {
+            --bg-top: #020817;
+            --bg-bottom: #0f172a;
+            --brand-blue: #60a5fa;
+            --button-blue: #3b82f6;
+            --text-sub: #cbd5e1;
+            --footer-bg: #0b1220;
+            --page-text: #e2e8f0;
+            --logo-shadow: rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            color: var(--page-text);
+            overflow: hidden;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-img {
+            width: clamp(75px, 20vw, 110px); 
+            height: auto;
+            margin-bottom: clamp(0.8rem, 3vh, 1.5rem); 
+            border-radius: 50%;
+            display: block;
+            box-shadow: 0 8px 20px var(--logo-shadow);
+        }
+
+        h1 {
+            font-size: clamp(1.4rem, 7vw, 2.8rem); 
+            color: var(--brand-blue);
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+
+        p.tagline {
+    font-size: clamp(0.85rem, 3.5vw, 1.25rem);
+    color: var(--text-sub);
+    margin-bottom: clamp(0.9rem, 2.2vh, 1.4rem);
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+        .btn {
+            background-color: var(--button-blue);
+            color: white;
+            padding: 14px 54px;
+            font-size: clamp(0.9rem, 3vw, 1.05rem);
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            padding: 1.2rem;
+            text-align: center;
+            font-size: clamp(0.7rem, 2.5vw, 1rem); 
+            color: #94a3b8;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+
+        body.dark-mode footer {
+            border-top-color: rgba(148, 163, 184, 0.15);
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding-bottom: 5vh; }
+            .btn { width: 70%; min-width: 200px; padding: 12px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="hero">
+        <img src="assets/main.png" alt="ProStudy Logo" class="logo-img">
+        
+        <h1>Welcome to ProStudy</h1>
+        <p class="tagline">Your best study resource provider</p>
+        
+        <button id="landing-cta" class="btn">Get Started</button>
+    </main>
+
+    <footer>
+        &copy; 2024 - 2027 ProStudy. All rights reserved.
+    </footer>
+
+    <script>
+        const LANDING_STORAGE_KEY = 'prostudy_landing_seen';
+        const DASHBOARD_PATH = 'dashboard.html';
+
+        if (localStorage.getItem(LANDING_STORAGE_KEY) === 'true') {
+            window.location.replace(DASHBOARD_PATH);
+        }
+
+        const button = document.getElementById('landing-cta');
+        button.addEventListener('click', () => {
+            localStorage.setItem(LANDING_STORAGE_KEY, 'true');
+            window.location.replace(DASHBOARD_PATH);
+        });
+
+        const THEME_STORAGE_KEY = 'prostudy_theme';
+
+        function resolveEffectiveTheme(theme) {
+            if (theme === 'dark') return 'dark';
+            if (theme === 'light') return 'light';
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function applyLandingTheme(theme) {
+            const normalizedTheme = (theme === 'dark' || theme === 'light' || theme === 'system') ? theme : 'system';
+            const effectiveTheme = resolveEffectiveTheme(normalizedTheme);
+            document.body.classList.toggle('dark-mode', effectiveTheme === 'dark');
+            localStorage.setItem(THEME_STORAGE_KEY, normalizedTheme);
+        }
+
+        function initializeLandingTheme() {
+            const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'system';
+            applyLandingTheme(savedTheme);
+
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            const updateIfSystem = () => {
+                if ((localStorage.getItem(THEME_STORAGE_KEY) || 'system') === 'system') {
+                    applyLandingTheme('system');
+                }
+            };
+
+            if (typeof mediaQuery.addEventListener === 'function') {
+                mediaQuery.addEventListener('change', updateIfSystem);
+            } else if (typeof mediaQuery.addListener === 'function') {
+                mediaQuery.addListener(updateIfSystem);
+            }
+        }
+
+        initializeLandingTheme();
+    </script>
+
+</body>
+</html>
