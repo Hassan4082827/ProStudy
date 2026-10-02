@@ -1,9 +1,9 @@
-# ProStudy System Infrastructure `v3.2.2`
+# ProStudy System Infrastructure `v3.2.3`
 
-![Version](https://img.shields.io/badge/Version-3.2.2-blue?style=for-the-badge) ![Platform](https://img.shields.io/badge/Developed_on-Mobile-orange?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Online-red?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-3.2.3-blue?style=for-the-badge) ![Platform](https://img.shields.io/badge/Developed_on-Mobile-orange?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Online-red?style=for-the-badge)
 
 > [!IMPORTANT]
-> **ProStudy v3.2.2** is a private, custom-engineered education management platform. This system is developed exclusively for my school environment and is not a public utility.
+> **ProStudy v3.2.3** is a private, custom-engineered education management platform. This system is developed exclusively for my school environment and is not a public utility.
 
 ---
 
